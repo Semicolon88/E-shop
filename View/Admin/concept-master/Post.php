@@ -133,7 +133,35 @@
 <!-- ============================================================== -->
 </div>
 </div>
-<!--?php include_once "../../../src/modal.inc.php";?>
+<!--Modal-->
+<div class="modal" tabindex="-1" id='myModal' role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body d-flex justify-content-center">
+          <table class='text-center'>
+              <thead>
+                  <tr>
+                      <th>Size</th>
+                      <th>Quantity</th>
+                  </tr>
+              </thead>
+              <tbody id='receiver'>
+
+              </tbody>
+          </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id='save' class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- ============================================================== -->
 <!-- end main wrapper  -->
 <!-- ============================================================== -->
@@ -177,7 +205,7 @@
             })
         })
     }*/
-    /*$("#addon-wrapping").click((e)=>{
+    $("#addon-wrapping").click((e)=>{
         e.preventDefault();
         let data = $("#info").val();
         $.ajax({
@@ -185,11 +213,12 @@
             method : 'POST',
             data : {data : data},
             success : (res)=>{
-                $('#myModal').modal('show');
+                $('#myModal').modal('toggle');
+                $('#receiver').html(res);
             }
         })
     })
-   $('#sub').click((e)=>
+   /*$('#sub').click((e)=>
     {
         e.preventDefault();
         let data = new FormData();
@@ -242,6 +271,11 @@
         xhr.open('post','../../../src/modal.inc.php');
         xhr.send(data);
     })*/
+    $('#save').click((e)=>{
+        e.preventDefault();
+        let data = $('.size').val();
+        console.log(data);
+    })
 </script>
 </body>
 

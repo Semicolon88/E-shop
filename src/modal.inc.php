@@ -81,4 +81,17 @@
         $obj = new Ctrl\Controller;
         $obj->delete_this($delete_id);
     }
+    if(isset($_POST['data'])){
+        $count = $_POST['data'];
+        $i = 0;
+        $response = "";
+        while($i < $count){
+            $response .= "<tr>";
+            $response .= "<td><input class='size' type='text'></td>";
+            $response .= "<td><input class='qty' type='text'></td>";
+            $response .= "</tr>";
+            $i++;
+        }
+        echo $response;
+    }
 ?>
