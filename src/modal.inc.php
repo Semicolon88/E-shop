@@ -1,5 +1,5 @@
 <?php
-    //include_once "Autoload.inc.php";
+    include_once "Autoload.inc.php";
     //include_once "../Classes/Model/Database.class.php";
     //include_once "../Classes/Controller/Controller.class.php";
     use Classes\Controller as Ctrl;
@@ -30,6 +30,7 @@
         $port = $_POST['portfolio'];
         $brand = $_POST['brand'];
         $details = $_POST['details'];
+        $sizes = $_POST['sizes'];
 
         $fields = [
             'product_name'=>$productName,
@@ -38,7 +39,8 @@
             'category'=>$cat,
             'portfolio'=>$port,
             'brand'=>$brand,
-            'description'=>$details
+            'description'=>$details,
+            'sizes'=>$sizes
         ];
         $obj->setter($fields,$_FILES);
         $obj->add();
@@ -51,10 +53,12 @@
         $edit_data = new Ctrl\Controller;
         $data = $edit_data->select_this($edit_id);
         $img = explode(',',$data['photo']);
-        //print_r($img);
         if($_POST){
-            //print_r($_POST);
-            //$obj = new Ctrl\Controller;
+            print_r($_POST);
+            print_r($_FILES);
+        }
+        //print_r($img);
+        /*if($_POST){
             $productName = $_POST['product_name'];
             $price = $_POST['price'];
             $listPrice = $_POST['list_price'];
@@ -74,7 +78,7 @@
             ];
             $edit_data->set($fields);
             $exec = $edit_data->update($edit_id);
-        }              
+        }  */            
     }
     if(isset($_GET['delete'])){
         $delete_id = $_GET['delete'];
@@ -87,8 +91,8 @@
         $response = "";
         while($i < $count){
             $response .= "<tr>";
-            $response .= "<td><input class='size' type='text'></td>";
-            $response .= "<td><input class='qty' type='text'></td>";
+            $response .= "<td><input class='form-control' id='size$i' type='text'></td>";
+            $response .= "<td><input class='form-control' id='qty$i' type='number' min=0></td>";
             $response .= "</tr>";
             $i++;
         }

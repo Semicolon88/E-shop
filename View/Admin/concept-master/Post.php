@@ -41,7 +41,7 @@
                                                 <div class="row">
                                                     <div class="upload-btn-wrapper text-center col-6 my-2" >
                                                         <button class="bttn mx-4"><i class="fas fa-pencil-alt"></i></button>
-                                                        <input type="file" name="photo[]" class='edit' id='edit<?=$count?>'/>
+                                                        <input type="file" name="photo[]" class='edit' id='edit-<?=$count?>' onclick ='getId(this.id);'/>
                                                     </div>
                                                     <div class="upload-btn-wrapper text-center col-6 my-2" >
                                                         <button class="btn" id='delete<?=$count?>' onclick='del(this.id);return false;'><i class="fas fa-trash-alt"></i></button>
@@ -69,7 +69,7 @@
                                     <button class="input-group-text btn" id="addon-wrapping">Add Sizes</button>
                                 </div>
                                 <!--div class="form-g col-md-5"-->
-                                    <input type="button" class='form-control mx-4'>
+                                    <input type="blank" id='val' name='sizes' class='form-control mx-4'>
                                 <!--/div-->
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                         </div>
                         <div class="form-group pull-right col-sm-4 col-md-4"><br>
                             <a href="post.php" class="btn btn-outline-dark">Cancel</a>&nbsp;&nbsp;
-                            <input type="submit" value="Add" id='<?=((isset($_GET['edit']))?'edit':'sub')?>' name="<?=((isset($_GET['edit']))?'edit':'submit')?>" class=" btn btn-outline-success pull-right">
+                            <input type="submit" value="<?=((isset($_GET['edit']))?'Edit':'Add')?>" id='<?=((isset($_GET['edit']))?'edit':'sub')?>' name="<?=((isset($_GET['edit']))?'edit':'submit')?>" class=" btn btn-outline-success pull-right">
                         </div><div class="çlearfix"></div>
                     </div>
                 </form>
@@ -157,7 +157,7 @@
           </table>
       </div>
       <div class="modal-footer">
-        <button type="button" id='save' class="btn btn-primary">Save changes</button>
+        <button type="button" id='save' data-dismiss='modal' class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
@@ -175,9 +175,9 @@
 <!-- main js-->
 <script src="assets/libs/js/main-js.js"></script>
 <script>
-    /*let editData = [];
+    let editData = [];
     let deleteData = [];
-    let del = (id)=>
+    /*let del = (id)=>
     {
         deleteData.push(id);
         //alert(deleteData);
@@ -271,11 +271,57 @@
         xhr.open('post','../../../src/modal.inc.php');
         xhr.send(data);
     })*/
-    $('#save').click((e)=>{
-        e.preventDefault();
-        let data = $('.size').val();
-        console.log(data);
+    $('#save').click(function(e){
+        //e.preventDefault();
+        let qty = '';
+        let dat = $('#receiver').children('tr');
+        for(let i = 0;i < dat.length;++i){
+            qty += $('#size'+i).val()+':'+$('#qty'+i).val()+",";
+        }
+        //$('myModal').modal('toggle');
+        //console.log(qty);
+        $('#val').val(qty);
     })
+    let getId = (id)=>{
+        $('#'+id).on('change',function(){
+            let fileId = id.split('-')[1];
+            let file = document.querySelector('#'+id).files;
+            let data = new FormData();
+            let xhr = new XMLHttpRequest();
+            data.append('file[]',file);
+            data.append('id',fileId);
+            let dea = {edit : data};
+            //console.log(file);
+            xhr.onreadystatechange = ()=>{
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    console.log(xhr.responseText);
+                }
+            }
+            xhr.open('POST','../../../src/modal.inc.php');
+            xhr.send(data);
+            /*$.ajax({
+                url : './../../../src/modal.inc.php?edit=<?=$edit_id?>',
+                method : 'post',
+                data : xhr,
+                cache : false,
+                processData : false,
+                contentType : false,
+                success : (res)=>{
+                    console.log(res);
+                }
+            })*/
+        })
+    }
+    //$('#edit').click((e)=>
+    //{
+        //e.preventDefault();
+        /*for(let i = 0;i < editData.length;++i)
+        {
+            $('#'+editData[i]).on('change',()=>{
+                console.log(editData[i]);
+            })
+        }*/
+    //})
 </script>
 </body>
 
