@@ -292,14 +292,14 @@
             data.append('id',fileId);
             let dea = {edit : data};
             //console.log(file);
-            xhr.onreadystatechange = ()=>{
+            /*xhr.onreadystatechange = ()=>{
                 if(xhr.readyState == 4 && xhr.status == 200){
                     console.log(xhr.responseText);
                 }
             }
             xhr.open('POST','../../../src/modal.inc.php');
-            xhr.send(data);
-            /*$.ajax({
+            xhr.send(data);*/
+            $.ajax({
                 url : './../../../src/modal.inc.php?edit=<?=$edit_id?>',
                 method : 'post',
                 data : xhr,
@@ -309,7 +309,7 @@
                 success : (res)=>{
                     console.log(res);
                 }
-            })*/
+            })
         })
     }
     //$('#edit').click((e)=>
