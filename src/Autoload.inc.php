@@ -1,13 +1,16 @@
 <?php
     spl_autoload_register('loadClass');
 
-    function loadClass($class){
-        $url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-        if(strpos($url,'view') !== false){
-            require_once "../".str_replace('\\','/',$class).".class.php";
-        }else if(strpos($url,'Classes') !== false){
+    function loadClass($class)
+    {
+        if(strpos($_SERVER['REQUEST_URI'],'Admin') !== false)
+        {
+            require_once "../../../".str_replace('\\','/',$class).".class.php";
+        }else if(strpos($_SERVER['REQUEST_URI'],'Classes') !== false)
+        {
             require_once str_replace('\\','/',$class).".class.php";
-        }else if(strpos($url,'src') !== false){
+        }else if(strpos($_SERVER['REQUEST_URI'],'src') !== false)
+        {
             require_once "../".str_replace('\\','/',$class).".class.php";
         }
     }

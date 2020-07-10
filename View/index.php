@@ -303,144 +303,39 @@
                         foreach($data as $row):
                             $images = explode(',',$data[$increment]['photo']);
                 ?>
-                            <div class="col-lg-4 col-md-5 col-sm-6 mix oranges fresh-meat border">
-                    <div class="fetured__item">
-                        <div class="border col-sm-8">
-                            <div class="fotorama">
-                                <?php
-                                   foreach($images as $image):
-                                ?>
-                                       <img src="<?=$image?>" alt="img">
-                                <?php
-                                    endforeach;
-                                ?>       
+                            <div class="col-lg-4 col-md-6 col-sm-12 mix oranges fresh-meat">
+                                <div class="fetured__item jutify-content-center my-3">
+                                    <div class="mx-auto">
+                                        <div class="fotorama">
+                                            <?php
+                                                foreach($images as $image):
+                                            ?>
+                                                    <img src="<?=$image?>" alt="img">
+                                            <?php
+                                                endforeach;
+                                            ?>       
 
-                            </div>
-                            <div class="row  feture__item__pic__hover border">
-                                <div class="col-5 text-center border">
-                                    <a href="#" class=''><i class="fa fa-heart"></i>Buy Now</a>
+                                        </div>
+                                        <div class="featured__item__text my-3">
+                                            <h6><a href="#"><?=$data[$increment]['product_name']?></a></h6>
+                                            <h5>$30.00</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row  fetured__item__pic__hover my-3">
+                                        <div class="col-6 text-center">
+                                            <a href="#" class='btn btn-outline-success'><i class="fa fa-heart"></i>&nbsp;Buy Now</a>
+                                        </div>
+                                        <div class="col-6 text-center">
+                                            <a href="#" class='btn btn-secondary'><i class="fa fa-shopping-cart"></i>&nbsp;Add to Cart</a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-7 text-center border">
-                                    <a href="#" class=''><i class="fa fa-shopping-cart"></i>Add to Cart</a>
-                                </div>
                             </div>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#"><?=$data[$increment]['product_name']?></a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
                 <?php
-                          $increment++;
+                            $increment++;
                         endforeach;
                     endif;    
-                ?>            
-                <!--div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-2.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-3.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood oranges">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-4.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-5.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-6.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-7.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div-->
-                <!--div class="col-lg-3 col-md-4 col-sm-6 mix fastfood vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-8.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div-->
+                ?> 
             </div>
         </div>
     </section>

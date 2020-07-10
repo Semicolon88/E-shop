@@ -1,7 +1,5 @@
 <?php
-    //include_once "../../../src/Autoload.inc.php";
-    include_once "../../../Classes/Model/Database.class.php";
-    include_once "../../../Classes/Controller/Controller.class.php";
+    include_once "../../../src/Autoload.inc.php";
     include_once "../../../src/modal.inc.php";
     include_once "../../../src/header.inc.php";
     use Classes\Controller as Ctrl;
@@ -176,17 +174,20 @@
 <script src="assets/libs/js/main-js.js"></script>
 <script>
     let editData = [];
+    let editFile = [];
     let deleteData = [];
     /*let del = (id)=>
     {
         deleteData.push(id);
         //alert(deleteData);
     }
-    /*$('.edit').on('change',()=>{
+    /*$('.edit').on('change',()=>
+    {
         console.log('changed');
     })*/
     /*let edt = (id)=>{
-        $('#'+id).on('change',()=>{
+        $('#'+id).on('change',()=>
+        {
             let xhr = new FormData();
             let data = document.querySelector('#'+id).files;
             //xhr.open('post',../../../src/modal.inc.php');
@@ -205,7 +206,8 @@
             })
         })
     }*/
-    $("#addon-wrapping").click((e)=>{
+    $("#addon-wrapping").click((e)=>
+    {
         e.preventDefault();
         let data = $("#info").val();
         $.ajax({
@@ -247,7 +249,8 @@
         xhr.open('post','../../../src/modal.inc.php');
         xhr.send(data);
     })
-    $('#edit').click((e)=>{
+    $('#edit').click((e)=>
+    {
         e.preventDefault();
         let data = new FormData();
         let keys = ['product_name','price','list_price','category','brand','portfolio','description'];
@@ -271,57 +274,64 @@
         xhr.open('post','../../../src/modal.inc.php');
         xhr.send(data);
     })*/
-    $('#save').click(function(e){
-        //e.preventDefault();
+    $('#save').click(()=>
+    {
         let qty = '';
         let dat = $('#receiver').children('tr');
         for(let i = 0;i < dat.length;++i){
             qty += $('#size'+i).val()+':'+$('#qty'+i).val()+",";
         }
-        //$('myModal').modal('toggle');
-        //console.log(qty);
         $('#val').val(qty);
     })
-    let getId = (id)=>{
+
+    ////////////////////////////////
+    /// please, i need you to review this part of my code.
+    /// so,i'm trying to send a file with ajax POST method to 
+    const getId = (id)=>
+    {
         $('#'+id).on('change',function(){
+            editData.push(id);
             let fileId = id.split('-')[1];
             let file = document.querySelector('#'+id).files;
-            let data = new FormData();
-            let xhr = new XMLHttpRequest();
-            data.append('file[]',file);
-            data.append('id',fileId);
-            let dea = {edit : data};
+            editFile.push(file);
+            //let data = new FormData();
+            //let xhr = new XMLHttpRequest();
+            //data.append('file[]',file);
+            //data.append('id',fileId);
             //console.log(file);
-            /*xhr.onreadystatechange = ()=>{
-                if(xhr.readyState == 4 && xhr.status == 200){
-                    console.log(xhr.responseText);
+            /*xhr.onreadystatechange = ()=>
+            {
+                if(xhr.readyState == 4 && xhr.status == 200)
+                {
+                    console.log("successfully sent");
                 }
             }
-            xhr.open('POST','../../../src/modal.inc.php');
+            xhr.open('POST','../../../src/modal.inc.php?edit=<?=$edit_id?>');
             xhr.send(data);*/
-            $.ajax({
-                url : './../../../src/modal.inc.php?edit=<?=$edit_id?>',
-                method : 'post',
-                data : xhr,
-                cache : false,
-                processData : false,
-                contentType : false,
-                success : (res)=>{
-                    console.log(res);
-                }
-            })
         })
     }
-    //$('#edit').click((e)=>
-    //{
-        //e.preventDefault();
-        /*for(let i = 0;i < editData.length;++i)
+    /*$('#edit').click((e)=>
+    {
+        e.preventDefault();
+        let formdata = new FormData();
+        let i = 0;
+        while(i < editData.length)
         {
-            $('#'+editData[i]).on('change',()=>{
-                console.log(editData[i]);
-            })
-        }*/
-    //})
+            formdata.append(editData[i],editFile[i]);
+            i++;
+        }
+        $.ajax({
+            url : "../../../src/modal.inc.php?edit=<?=$edit_id?>",
+            method : 'POST',
+            data : data,
+            processData : false,
+            contentType : false,
+            cache : false,
+            success : (res)=>{
+                console.log(res);
+            }
+        })
+    })*/
 </script>
 </body>
 

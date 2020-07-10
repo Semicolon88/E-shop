@@ -1,6 +1,5 @@
 <?php
     namespace Classes\Controller;
-    //include_once "../Model/Database.class.php";
 
     use Classes\Model\Database as DB;
 
@@ -49,7 +48,8 @@
             $this->data['brand'] = $brand_prop['id'];
         }
 
-        public function add_category(){
+        public function add_category()
+        {
             $Obj = new DB();
             $portfolio = $this->data['portfolio'];
             $query_cat = "SELECT * FROM categories WHERE category = :category AND parent = 0";
@@ -123,7 +123,8 @@
                 $prep_stmt->bindValue(":".$key,$value);
             }
             $exec = $prep_stmt->execute();
-            if($exec){
+            if($exec)
+            {
                 header('Location: pages/data-tables.php');
             }
         }
@@ -132,8 +133,10 @@
             $obj = new DB();
             $select_query = "SELECT * FROM products WHERE deleted=0";
             $stmt = $obj->DBHandler->query($select_query);
-            if($stmt->rowCount() > 0){
-                while($row = $stmt->fetch()){
+            if($stmt->rowCount() > 0)
+            {
+                while($row = $stmt->fetch())
+                {
                     $data[] = $row;
                 }
                 return $data;
@@ -170,59 +173,34 @@
         }  
         public function update($id)
         {
-            /*$obj = new DB();
             $this->validate();
             $st = "";
-            foreach($this->data as $key => $value){
-                $st .= $key."=:".$key.", ";
-            }
-            $sequel = "UPDATE products SET ".$st;
-            $sequel .= "WHERE id=:id";
-            $stmt = $obj->DBHandler->prepare($sequel);
-            foreach ($this->data as $key => $value) {
-                # code...
-                $stmt->bindValue(':'.$key,$value);
-            }
-            $stmt->bindValue(':id',$id);
-            $exec = $stmt->execute();*/
-            $this->validate();
-            $st = "";
-            $counter = 1;
-            $total_field = count($this->data );
-            foreach ($this->data  as $key => $value) {
-                # code...
-                if($counter === $total_field){
-                    $set = "$key = :".$key;
-                    $st = $st.$set;
-                }else{
-                    $set = "$key = :".$key.", ";
-                    $st = $st.$set;
-                    $counter++;
-                }
+            foreach ($this->data  as $key => $value) 
+            {
+                $st .= "$key = :".$key.", ";
             }
             $sql = "";
-            $sql.= "UPDATE products SET ".$st;
+            $sql.= "UPDATE products SET ".rtrim($st,', ');
             $sql.= " WHERE id = ".$id;
-            $db = new db();
-            $stmt = $db->DBHandler->prepare($sql);
-            foreach ($this->data as $key => $value) {
+            $stmt = $this->DBHandler->prepare($sql);
+            foreach ($this->data as $key => $value) 
+            {
                 # code...
                 $stmt->bindValue(":".$key,$value);
             }
             $exec = $stmt->execute();
-            if($exec){
+            if($exec)
+            {
                 header('Location: pages/data-tables.php');
             }
-            //echo $st;
-            //print_r($this->data);
         }
         public function delete_this($id)
         {
-            $obj = new db();
             $sequel = "UPDATE products SET deleted = 1 WHERE id=?";
-            $stmt = $obj->DBHandler->prepare($sequel);
+            $stmt = $this->DBHandler->prepare($sequel);
             $exec = $stmt->execute([$id]);
-            if($exec){
+            if($exec)
+            {
                 header('Location: pages/data-tables.php');
             }
         }
