@@ -1,9 +1,8 @@
 <?php
-    include_once "Autoload.inc.php";
-    use Classes\Controller as Ctrl;
+    use Classes\Controller\Controller as Ctrl;
     if(isset($_POST['submit']))
     {
-        $obj = new Ctrl\Controller;
+        $obj = new Ctrl;
         $productName = $_POST['product_name'];
         $price = $_POST['price'];
         $listPrice = $_POST['list_price'];
@@ -29,13 +28,10 @@
     if(isset($_GET['edit']))
     {
         $edit_id = $_GET['edit'];
-        $edit_data = new Ctrl\Controller;
+        $edit_data = new Ctrl;
         $data = $edit_data->select_this($edit_id);
         $img = explode(',',$data['photo']);
 
-        if($_GET){
-            print_r($_FILES);
-        }
         if($_POST['edit'])
         {
             $productName = $_POST['product_name'];
@@ -62,7 +58,7 @@
     if(isset($_GET['delete']))
     {
         $delete_id = $_GET['delete'];
-        $obj = new Ctrl\Controller;
+        $obj = new Ctrl;
         $obj->delete_this($delete_id);
     }
     if(isset($_POST['data']))

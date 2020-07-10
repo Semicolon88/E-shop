@@ -1,8 +1,7 @@
 <?php
     include_once "../../../src/Autoload.inc.php";
-    include_once "../../../src/modal.inc.php";
+    include_once "../../../src/requests.inc.php";
     include_once "../../../src/header.inc.php";
-    use Classes\Controller as Ctrl;
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -34,18 +33,18 @@
                                         <?php
                                             foreach($img as $photo): 
                                         ?>
-                                            <div style="width:150px;height:150px;" class='col-4 col-md-4 col-sm-4'>
-                                                <img src="<?=$photo?>" alt="img" style="width:100%;height:80%;"/>
-                                                <div class="row">
-                                                    <div class="upload-btn-wrapper text-center col-6 my-2" >
-                                                        <button class="bttn mx-4"><i class="fas fa-pencil-alt"></i></button>
-                                                        <input type="file" name="photo[]" class='edit' id='edit-<?=$count?>' onclick ='getId(this.id);'/>
-                                                    </div>
-                                                    <div class="upload-btn-wrapper text-center col-6 my-2" >
-                                                        <button class="btn" id='delete<?=$count?>' onclick='del(this.id);return false;'><i class="fas fa-trash-alt"></i></button>
+                                                <div style="width:150px;height:150px;" class='col-4 col-md-4 col-sm-4'>
+                                                    <img src="<?=$photo?>" alt="img" style="width:100%;height:80%;"/>
+                                                    <div class="row">
+                                                        <div class="upload-btn-wrapper text-center col-6 my-2" >
+                                                            <button class="bttn mx-4"><i class="fas fa-pencil-alt"></i></button>
+                                                            <input type="file" name="photo[]" class='edit' id='edit-<?=$count?>' onclick ='getId(this.id);'/>
+                                                        </div>
+                                                        <div class="upload-btn-wrapper text-center col-6 my-2" >
+                                                            <button class="btn" id='delete<?=$count?>' onclick='del(this.id);return false;'><i class="fas fa-trash-alt"></i></button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                         <?php
                                                 $count++;
                                             endforeach;
@@ -286,52 +285,34 @@
 
     ////////////////////////////////
     /// please, i need you to review this part of my code.
-    /// so,i'm trying to send a file with ajax POST method to 
-    const getId = (id)=>
+    /// so,i'm trying to send a file with ajax POST method to this url ../../../src/modal.inc.php?edit=
+    
+    let getId = (id)=>
     {
         $('#'+id).on('change',function(){
             editData.push(id);
             let fileId = id.split('-')[1];
             let file = document.querySelector('#'+id).files;
             editFile.push(file);
-            //let data = new FormData();
-            //let xhr = new XMLHttpRequest();
-            //data.append('file[]',file);
-            //data.append('id',fileId);
+            let data = new FormData();
+            let xhr = new XMLHttpRequest();
+            data.append('file[]',file);
+            data.append('id',fileId);
             //console.log(file);
-            /*xhr.onreadystatechange = ()=>
+            xhr.onreadystatechange = ()=>
             {
                 if(xhr.readyState == 4 && xhr.status == 200)
                 {
-                    console.log("successfully sent");
+                    console.log(xhr.responseText);
+                }else
+                {
+                    console.log(xhr.);
                 }
             }
-            xhr.open('POST','../../../src/modal.inc.php?edit=<?=$edit_id?>');
-            xhr.send(data);*/
+            xhr.open('GET','../../../src/modal.inc.php?edit=<?=$edit_id?>');
+            xhr.send(file);
         })
     }
-    /*$('#edit').click((e)=>
-    {
-        e.preventDefault();
-        let formdata = new FormData();
-        let i = 0;
-        while(i < editData.length)
-        {
-            formdata.append(editData[i],editFile[i]);
-            i++;
-        }
-        $.ajax({
-            url : "../../../src/modal.inc.php?edit=<?=$edit_id?>",
-            method : 'POST',
-            data : data,
-            processData : false,
-            contentType : false,
-            cache : false,
-            success : (res)=>{
-                console.log(res);
-            }
-        })
-    })*/
 </script>
 </body>
 

@@ -35,7 +35,9 @@
                                             <td><?=$row['product_name']?></td>
                                             <td><?=$row['price']?></td>
                                             <td><?=$row['list_price']?></td>
-                                            <td>61</td>
+                                            <td>
+                                                butt
+                                            </td>
                                             <td>
                                                 <div class="row justify-content-center">
                                                     <div class="col-4 text-center">

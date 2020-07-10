@@ -1,7 +1,7 @@
 <?php
     include_once "../Classes/Model/Database.class.php";
     include_once "../Classes/Controller/Controller.class.php";
-    use Classes\Controller as Ctrl;
+    use Classes\Controller\Controller as Ctrl;
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -224,7 +224,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
+                    <div class="hero__item set-bg" data-setbg="bg.jpg">
                         <div class="hero__text">
                             <span>FRUIT FRESH</span>
                             <h2>Vegetable <br />100% Organic</h2>
@@ -295,7 +295,7 @@
             </div>
             <div class="row featured__filter">
                 <?php
-                    $obj = new Ctrl\Controller;
+                    $obj = new Ctrl;
                     $data = $obj->selectAll();
                     //print_r($data['0']);
                     $increment = 0;
