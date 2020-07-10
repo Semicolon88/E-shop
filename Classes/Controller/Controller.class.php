@@ -30,19 +30,18 @@
 
         public function add_brand()
         {
-            $obj = new DB();
             $brand = $this->data['brand'];
             $select_brand = "SELECT * FROM brands WHERE brand='$brand'";
-            $prep_brand_query = $obj->DBHandler->query($select_brand);
+            $prep_brand_query = $this->DBHandler->query($select_brand);
             $brand_prop = $prep_brand_query->fetch();
             if($prep_brand_query->rowCount() == 0)
             {
                 $sql = "INSERT INTO brands (brand) VALUE (:brand)";
-                $stmt = $obj->DBHandler->prepare($sql);
+                $stmt = $this->DBHandler->prepare($sql);
                 $stmt->bindValue(':brand',$this->data['brand']);
                 $exec = $stmt->execute();
                 $select_brand = "SELECT * FROM brands WHERE brand='$brand'";
-                $prep_brand_query = $obj->DBHandler->query($select_brand);
+                $prep_brand_query = $this->DBHandler->query($select_brand);
                 $brand_prop = $prep_brand_query->fetch();
             }
             $this->data['brand'] = $brand_prop['id'];
@@ -50,21 +49,20 @@
 
         public function add_category()
         {
-            $Obj = new DB();
             $portfolio = $this->data['portfolio'];
             $query_cat = "SELECT * FROM categories WHERE category = :category AND parent = 0";
-            $prep_cat_query = $Obj->DBHandler->prepare($query_cat);
+            $prep_cat_query = $this->DBHandler->prepare($query_cat);
             $prep_cat_query->bindValue(':category',$this->data['category']);
             $prep_cat_query->execute();
             $parent = $prep_cat_query->fetch();
             if($prep_cat_query->rowCount() == 0)
             {
                 $sql = "INSERT INTO categories (category) VALUE (:category)";
-                $prep_cat_query = $Obj->DBHandler->prepare($sql);
+                $prep_cat_query = $this->DBHandler->prepare($sql);
                 $prep_cat_query->bindValue(':category',$this->data['category']);
                 $exec = $prep_cat_query->execute();
                 $query_cat = "SELECT * FROM categories WHERE category = :category AND parent = 0";
-                $prep_cat_query = $Obj->DBHandler->prepare($query_cat);
+                $prep_cat_query = $this->DBHandler->prepare($query_cat);
                 $prep_cat_query->bindValue(':category',$this->data['category']);
                 $prep_cat_query->execute();
                 $parent = $prep_cat_query->fetch();
@@ -72,16 +70,16 @@
             $this->data['category'] = $parent['id'];
 
             $query_child = "SELECT * FROM categories WHERE category = ? AND parent = ?";
-            $prep_child_query = $Obj->DBHandler->prepare($query_child);
+            $prep_child_query = $this->DBHandler->prepare($query_child);
             $prep_child_query->execute([$this->data['portfolio'],$parent['id']]);
             $child = $prep_child_query->fetch();
             if($prep_child_query->rowCount() == 0)
             {
                 $sql = "INSERT INTO categories (category,parent) VALUES (?,?)";
-                $stmt = $Obj->DBHandler->prepare($sql);
+                $stmt = $this->DBHandler->prepare($sql);
                 $exec = $stmt->execute([$portfolio,$parent['id']]);
                 $query_cat = "SELECT * FROM categories WHERE category = ? AND parent = ?";
-                $prep_child_query = $Obj->DBHandler->prepare($query_cat);
+                $prep_child_query = $this->DBHandler->prepare($query_cat);
                 $prep_child_query->execute([$this->data['portfolio'],$parent['id']]);
                 $child = $prep_child_query->fetch();
             }
@@ -111,13 +109,12 @@
         }
         public function add()
         {
-            $obj = new DB();
             $this->validate();
             $this->upload_image();
             $query_keys = implode(',',array_keys($this->data));
             $query_values = implode(', :',array_keys($this->data));
             $query = "INSERT INTO products($query_keys) VALUES(:".$query_values.")";
-            $prep_stmt = $obj->DBHandler->prepare($query);
+            $prep_stmt = $this->DBHandler->prepare($query);
             foreach($this->data as $key => $value)
             {
                 $prep_stmt->bindValue(":".$key,$value);
@@ -130,9 +127,8 @@
         }
         public function selectAll()
         {
-            $obj = new DB();
             $select_query = "SELECT * FROM products WHERE deleted=0";
-            $stmt = $obj->DBHandler->query($select_query);
+            $stmt = $this->DBHandler->query($select_query);
             if($stmt->rowCount() > 0)
             {
                 while($row = $stmt->fetch())
@@ -144,20 +140,19 @@
         }
         public function select_this($id)
         {
-            $obj = new DB();
             $query = "SELECT * FROM products WHERE id=:id";
-            $prep_stmt = $obj->DBHandler->prepare($query);
+            $prep_stmt = $this->DBHandler->prepare($query);
             $prep_stmt->bindValue(':id',$id);
             $prep_stmt->execute();
             $result = $prep_stmt->fetch();
             $get_cat = "SELECT * FROM categories WHERE id = ? AND parent = 0";
-            $prep = $obj->DBHandler->prepare($get_cat);
+            $prep = $this->DBHandler->prepare($get_cat);
             $prep->execute([$result['category']]);
             $cat_res = $prep->fetch();
             $result['category'] = $cat_res['category'];
             ////////
             $get_port = "SELECT * FROM categories WHERE id =:id AND parent =:parent ";
-            $prep_port = $obj->DBHandler->prepare($get_port);
+            $prep_port = $this->DBHandler->prepare($get_port);
             $prep_port->bindValue(':id',$result['portfolio']);
             $prep_port->bindValue(':parent',$cat_res['id']);
             $prep_port->execute();
@@ -165,7 +160,7 @@
             $result['portfolio'] = $port_res['category'];
             //////////
             $get_brand = "SELECT * FROM brands WHERE id =?";
-            $prep_brand = $obj->DBHandler->prepare($get_brand);
+            $prep_brand = $this->DBHandler->prepare($get_brand);
             $prep_brand->execute([$result['brand']]);
             $brand_res = $prep_brand->fetch();
             $result['brand'] = $brand_res['brand'];
