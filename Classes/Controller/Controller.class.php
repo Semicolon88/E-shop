@@ -96,8 +96,8 @@
                 $ext = explode('/',$type[$i]);
                 $actExt = end($ext);
                 $file_name = sha1(microtime()).'.'.$actExt;
-                $dir = $_SERVER['DOCUMENT_ROOT'].'/Shopify/View/Admin/Uploads/'.$file_name;
-                $db_path[] = '/Shopify/View/Admin/Uploads/'.$file_name;
+                $dir = $_SERVER['DOCUMENT_ROOT'].'/E-shop/View/Admin/Uploads/'.$file_name;
+                $db_path[] = '/E-shop/View/Admin/Uploads/'.$file_name;
                 move_uploaded_file($tmp_name[$i],$dir);
             }
             $this->data['photo'] = implode(',',$db_path);
