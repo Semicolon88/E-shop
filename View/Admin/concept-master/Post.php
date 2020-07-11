@@ -209,8 +209,6 @@
     {
         e.preventDefault();
         let data = $("#info").val();
-
-        //console.log(data);
        $.ajax({
             url : '../../../src/requests.inc.php',
             method : 'POST',
@@ -221,12 +219,6 @@
             }
         })
     })
-    /*document.querySelector('#addon-wrapping').addEventListener('click',function(e){
-        e.preventDefault();
-        let data = $("#info").val();
-
-        console.log(data);
-    })*/
    /*$('#sub').click((e)=>
     {
         e.preventDefault();
