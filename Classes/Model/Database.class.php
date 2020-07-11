@@ -21,7 +21,7 @@
                 $this->DBHandler->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_ASSOC);
                 $this->DBHandler->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
             }catch(PDOException $e){
-                echo "Database connection failed";
+                die("Database connection failed : ".$e->getMesaage());
             }
         }
     }
