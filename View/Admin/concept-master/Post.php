@@ -209,8 +209,10 @@
     {
         e.preventDefault();
         let data = $("#info").val();
-        $.ajax({
-            url : '../../../src/modal.inc.php',
+
+        //console.log(data);
+       $.ajax({
+            url : '../../../src/requests.inc.php',
             method : 'POST',
             data : {data : data},
             success : (res)=>{
@@ -219,6 +221,12 @@
             }
         })
     })
+    /*document.querySelector('#addon-wrapping').addEventListener('click',function(e){
+        e.preventDefault();
+        let data = $("#info").val();
+
+        console.log(data);
+    })*/
    /*$('#sub').click((e)=>
     {
         e.preventDefault();
@@ -287,7 +295,7 @@
     /// please, i need you to review this part of my code.
     /// so,i'm trying to send a file with ajax POST method to this url ../../../src/modal.inc.php?edit=
     
-    let getId = (id)=>
+   /* let getId = (id)=>
     {
         $('#'+id).on('change',function(){
             editData.push(id);
@@ -312,7 +320,7 @@
             xhr.open('GET','../../../src/modal.inc.php?edit=<?=$edit_id?>');
             xhr.send(file);
         })
-    }
+    }*/
 </script>
 </body>
 
