@@ -100,7 +100,7 @@
                     $this->error[] = "Image format not allowed";
                 break;
                 }
-                if($size[$i] > 10000000)
+                if($size[$i] > 101010101)
                 {
                     $this->error[] = "File too large";
                 break;
@@ -212,14 +212,72 @@
                 header('Location: ../View/Admin/concept-master/pages/data-tables.php');
             }
         }
-        public function display_errors(){
-            $display = "<ul class='bg-info'>";
-            foreach ($this->error as $key) {
+        public function display_errors()
+        {
+            $display = "<ul class='bg-info text-center m-b-18'>";
+            foreach ($this->error as $key) 
+            {
                 # code...
                 $display .= "<li class='text-danger'>".$key."</li>";
             }
             $display .= "</ul>";
             return $display;
+        }
+        public function addUser()
+        {
+            $keys = implode(',',array_keys($this->data));
+            $values = implode(', :',array_keys($this->data));
+            $sequel = "SELECT * FROM users WHERE email = ?";
+            $stmt = $this->DBHandler->prepare($sequel);
+            $stmt->execute([$this->data['email']]);
+            if($stmt->rowCount() > 0)
+            {
+                $this->error[] = "User with this email already exist!";
+            }
+
+            if(!empty($this->error))
+            {
+                echo $this->display_errors();
+            }else
+            {
+                $sequel = "INSERT INTO users ($keys) VALUES (:".$values.")";
+                $stmt = $this->DBHandler->prepare($sequel);
+                foreach ($this->data as $key => $value)
+                {
+                    # code...
+                    $stmt->bindValue(":".$key,$value);
+                }
+                $exec = $stmt->execute();
+            }
+        }
+        public function login()
+        {
+            $sequel = "SELECT * FROM users WHERE email = ?";
+            $stmt = $this->DBHandler->prepare($sequel);
+            $stmt->execute([$this->data['email']]);
+            $result = $stmt->fetch();
+            if($stmt->rowCount() == 0)
+            {
+                $this->error[] = "User not found";
+            }
+            if(!empty($this->error))
+            {
+                echo $this->display_errors();    
+            }else
+            {
+                if(!password_verify($this->data['pword'],$result['pword']))
+                {
+                    $this->error[] = "Password does not match our record.Try again";
+                }
+                if(!empty($this->error))
+                {
+                    echo $this->display_errors();
+                }else
+                {
+                    Session::set('user_id',$result);
+                    print_r(Session::get('user_id'));
+                }
+            }
         }
     }
 

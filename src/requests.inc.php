@@ -1,5 +1,4 @@
 <?php
-    //include_once "header.inc.php";
     include_once "Autoload.inc.php";
     use Classes\Controller\Controller as Ctrl;
     if(isset($_POST['submit']))
@@ -115,5 +114,37 @@
             $i++;
         }
         echo $response;
+    }
+    if(isset($_POST['signup']))
+    {
+        $email = $_POST['email'];
+        $pword = $_POST['pword'];
+        $rPword = $_POST['r-pword'];
+        $obj = new Ctrl;
+        if($pword != $rPword)
+        {
+            $obj->error[] = "Password does not match";
+        }
+        $fields = [
+            'email'=>$email,
+            'pword'=>password_hash($pword,PASSWORD_DEFAULT)
+        ];
+        if(!empty($obj->error))
+        {
+            echo $obj->display_errors();
+        }else
+        {
+            $obj->setData($fields);
+            $obj->addUser();
+        }
+    }
+    if(isset($_POST['login']))
+    {
+        $email = $_POST['email'];
+        $pword = $_POST['pword'];
+        $obj = new Ctrl;
+        $obj->setData(['email'=>$email,'pword'=>$pword]);
+        $obj->login();
+
     }
 ?>

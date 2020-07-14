@@ -1,8 +1,9 @@
 <?php
     namespace Classes\Model;
-
+    
     use PDO;
     use PDOException;
+    use Classes\Controller\Session as Session;
 
     class Database
     {
@@ -25,4 +26,5 @@
             }
         }
     }
+    Session::start();
 ?>
