@@ -1,6 +1,5 @@
 <?php
-     include_once "../../../../Classes/Model/Database.class.php";
-     include_once "../../../../Classes/Controller/Controller.class.php";
+     include_once "../../../../src/Autoload.inc.php";
      include_once "../../../../src/test.php";
 ?>
 <div class="row">
@@ -36,7 +35,41 @@
                                             <td><?=$row['price']?></td>
                                             <td><?=$row['list_price']?></td>
                                             <td>
-                                                butt
+                                                <div class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        <p>
+										                    <b class="caret" style="margin-left:25%"></b>
+									                    </p>
+
+                                                    </a>
+                                                    <div class="dropdown-menu text-center">
+                                                        <table class="mx-auto">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Size</th>
+                                                                    <th>Quantity</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                    $size_array = explode(',',$row['sizes']);
+                                                                    foreach($size_array as $size):
+                                                                        $available = explode(':',$size);
+                                                                        $sizes = $available[0];
+                                                                        $qty = end($available);
+                                                                ?>
+                                                                        <tr>
+                                                                            <td><?=$sizes?></td>
+                                                                            <td><?=$qty?></td>
+                                                                        </tr>
+                                                                <?php
+                                                                    endforeach;
+                                                                ?>        
+                                                            </tbody>
+                                                        </table>
+                                                                      
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="row justify-content-center">
@@ -111,7 +144,22 @@
 <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
 <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
-    
+<script type="text/javascript">
+    	$(document).ready(function(){
+
+        	//demo.initChartist();
+
+        	$.notify({
+            	icon: 'pe-7s-look',
+            	message: "Welcome to <b>Eko Heights</b>"
+
+            },{
+                type: 'info',
+                timer: 4000
+            });
+
+    	});
+	</script>    
 </body>
  
 </html>

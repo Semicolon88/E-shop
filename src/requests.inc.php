@@ -1,4 +1,6 @@
 <?php
+    //include_once "header.inc.php";
+    include_once "Autoload.inc.php";
     use Classes\Controller\Controller as Ctrl;
     if(isset($_POST['submit']))
     {
@@ -12,6 +14,7 @@
         $details = $_POST['details'];
         $sizes = $_POST['sizes'];
 
+
         $fields = [
             'product_name'=>$productName,
             'price'=>$price,
@@ -22,8 +25,28 @@
             'description'=>$details,
             'sizes'=>$sizes
         ];
-        $obj->setter($fields,$_FILES);
-        $obj->add();
+        foreach ($fields as $key => $value) 
+        {
+            if(isset($_POST[$key]) && empty($_POST[$key]))
+            {
+                $obj->error[] = "All feilds are required";
+            break;
+            }
+        }
+        if(empty($_FILES['photo']['name'][0])){
+            $obj->error[] = "upload image";
+        }else{
+            $obj->setFile($_FILES);
+            $obj->upload_image();
+            //print_r($_FILES);
+        }
+        if(!empty($obj->error))
+        {
+            echo $obj->display_errors();
+        }else{
+            $obj->setData($fields);
+            $obj->add();
+        }
     }
     if(isset($_GET['edit']))
     {
@@ -32,7 +55,7 @@
         $data = $edit_data->select_this($edit_id);
         $img = explode(',',$data['photo']);
 
-        if($_POST['edit'])
+        if(isset($_POST['edit']))
         {
             $productName = $_POST['product_name'];
             $price = $_POST['price'];
@@ -41,7 +64,7 @@
             $port = $_POST['portfolio'];
             $brand = $_POST['brand'];
             $details = $_POST['details'];
-    
+            $sizes = $_POST['sizes'];
             $fields = [
                 'product_name'=>$productName,
                 'price'=>$price,
@@ -50,9 +73,26 @@
                 'portfolio'=>$port,
                 'brand'=>$brand,
                 'description'=>$details,
+                'sizes'=>$sizes
             ];
-            $edit_data->set($fields);
-            $exec = $edit_data->update($edit_id);
+            foreach ($fields as $key => $value) 
+            {
+                if(isset($_POST[$key]) && empty($_POST[$key]))
+                {
+                    $edit_data->error[] = "All feilds are required";
+                break;
+                }
+            }
+            if(!empty($edit_data->error))
+            {
+                //header('Location: ../View/Admin/concept-master/Post.php?edit='.$edit_id);
+                echo $edit_data->display_errors();
+            }else
+            {
+                $edit_data->setData($fields);
+                $exec = $edit_data->update($edit_id);
+                //echo "whats wrong?";
+            }
         }           
     }
     if(isset($_GET['delete']))

@@ -10,22 +10,21 @@
         public function validate(); 
     }
 
-    class Controller extends DB implements Insertface
+    class Controller extends DB implements InsertFace
     {
         public $data;
         public $files;
+        public $fileNames = "";
         public $error = [];
         public $success = [];
 
-        public function setter($data,$file)
+        public function setData($data)
         {
             $this->data = $data;
-            $this->files = $file;
         }
-
-        public function set($data)
+        public function setFile($file)
         {
-            $this->data = $data;
+            $this->files = $file;
         }
 
         public function add_brand()
@@ -49,7 +48,6 @@
 
         public function add_category()
         {
-            $portfolio = $this->data['portfolio'];
             $query_cat = "SELECT * FROM categories WHERE category = :category AND parent = 0";
             $prep_cat_query = $this->DBHandler->prepare($query_cat);
             $prep_cat_query->bindValue(':category',$this->data['category']);
@@ -68,7 +66,7 @@
                 $parent = $prep_cat_query->fetch();
             }
             $this->data['category'] = $parent['id'];
-
+            //////////Insert portfolio
             $query_child = "SELECT * FROM categories WHERE category = ? AND parent = ?";
             $prep_child_query = $this->DBHandler->prepare($query_child);
             $prep_child_query->execute([$this->data['portfolio'],$parent['id']]);
@@ -77,7 +75,7 @@
             {
                 $sql = "INSERT INTO categories (category,parent) VALUES (?,?)";
                 $stmt = $this->DBHandler->prepare($sql);
-                $exec = $stmt->execute([$portfolio,$parent['id']]);
+                $exec = $stmt->execute([$this->data['portfolio'],$parent['id']]);
                 $query_cat = "SELECT * FROM categories WHERE category = ? AND parent = ?";
                 $prep_child_query = $this->DBHandler->prepare($query_cat);
                 $prep_child_query->execute([$this->data['portfolio'],$parent['id']]);
@@ -88,19 +86,34 @@
         public function upload_image()
         {
             $name = $this->files['photo']['name'];
+            $size = $this->files['photo']['size'];
             $tmp_name = $this->files['photo']['tmp_name'];
             $type = $this->files['photo']['type'];
+            $formats = ['jpg','jpeg','png'];
             $db_path = [];
             for($i = 0;$i < count($name);$i++)
             {
                 $ext = explode('/',$type[$i]);
                 $actExt = end($ext);
-                $file_name = sha1(microtime()).'.'.$actExt;
-                $dir = $_SERVER['DOCUMENT_ROOT'].'/E-shop/View/Admin/Uploads/'.$file_name;
-                $db_path[] = '/E-shop/View/Admin/Uploads/'.$file_name;
-                move_uploaded_file($tmp_name[$i],$dir);
+                if(!in_array($actExt,$formats))
+                {
+                    $this->error[] = "Image format not allowed";
+                break;
+                }
+                if($size[$i] > 10000000)
+                {
+                    $this->error[] = "File too large";
+                break;
+                }
+                if(empty($this->error))
+                {
+                    $file_name = sha1(microtime()).'.'.$actExt;
+                    $dir = $_SERVER['DOCUMENT_ROOT'].'/E-shop/View/Admin/Uploads/'.$file_name;
+                    $db_path[] = '/E-shop/View/Admin/Uploads/'.$file_name;
+                    move_uploaded_file($tmp_name[$i],$dir);
+                }
             }
-            $this->data['photo'] = implode(',',$db_path);
+            $this->fileNames .= implode(',',$db_path);
         }
         public function validate()
         {
@@ -110,20 +123,20 @@
         public function add()
         {
             $this->validate();
-            $this->upload_image();
-            $query_keys = implode(',',array_keys($this->data));
-            $query_values = implode(', :',array_keys($this->data));
-            $query = "INSERT INTO products($query_keys) VALUES(:".$query_values.")";
-            $prep_stmt = $this->DBHandler->prepare($query);
-            foreach($this->data as $key => $value)
-            {
-                $prep_stmt->bindValue(":".$key,$value);
-            }
-            $exec = $prep_stmt->execute();
-            if($exec)
-            {
-                header('Location: pages/data-tables.php');
-            }
+            $this->data['photo'] = $this->fileNames;
+                $query_keys = implode(',',array_keys($this->data));
+                $query_values = implode(', :',array_keys($this->data));
+                $query = "INSERT INTO products($query_keys) VALUES(:".$query_values.")";
+                $prep_stmt = $this->DBHandler->prepare($query);
+                foreach($this->data as $key => $value)
+                {
+                    $prep_stmt->bindValue(":".$key,$value);
+                }
+                $exec = $prep_stmt->execute();
+                if($exec)
+                {
+                    header('Location: pages/data-tables.php');
+                }
         }
         public function selectAll()
         {
@@ -196,8 +209,17 @@
             $exec = $stmt->execute([$id]);
             if($exec)
             {
-                header('Location: pages/data-tables.php');
+                header('Location: ../View/Admin/concept-master/pages/data-tables.php');
             }
+        }
+        public function display_errors(){
+            $display = "<ul class='bg-info'>";
+            foreach ($this->error as $key) {
+                # code...
+                $display .= "<li class='text-danger'>".$key."</li>";
+            }
+            $display .= "</ul>";
+            return $display;
         }
     }
 
