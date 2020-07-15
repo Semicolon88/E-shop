@@ -1,14 +1,11 @@
 <?php
-     include_once "../../../../src/Autoload.inc.php";
-     use Classes\Controller\Controller as Ctrl;
-                $data = new Ctrl;
-                                           if($data::is_logged_in()){
-                                               //$data->loggin_error_redirect("../../Login/login.php");
-                                               print_r($_SESSION);
-                                           }else{
-                                            $data::loggin_error_redirect("../../Login/login.php");
-                                           }   
-     include_once "../../../../src/test.php";
+    include_once "../../../../src/Autoload.inc.php";
+    use Classes\Controller\Controller as Ctrl;
+    $data = new Ctrl;
+    if(!$data::is_logged_in()){
+        $data::loggin_error_redirect("../../Login/login.php");
+    }   
+    include_once "../../../../src/test.php";
 ?>
 <div class="row">
 <!-- ============================================================== -->
@@ -16,18 +13,7 @@
 <!-- ============================================================== -->
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="container bg-white">
-            <!--h5 class="card-header">Basic Table</h5-->
             <a href="../post.php" class="btn btn-outline-dark  m-4">Add Product</a>
-            <!--?php
-                use Classes\Controller\Controller as Ctrl;
-                $data = new Ctrl;
-                                           if($data->is_logged_in()){
-                                               //$data->loggin_error_redirect("../../Login/login.php");
-                                               print_r($_SESSION);
-                                           }else{
-                                            $data->loggin_error_redirect("../../Login/login.php");
-                                           }   
-            ?-->
             <div class="card-body">
                 <div class="table-responsive">
                      <table class="table table-striped  table-bordered fist text-center">
