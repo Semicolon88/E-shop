@@ -26,6 +26,6 @@
             }
         }
     }
-    Session::start();
+    //Session::start();
     //Session::destroy();
 ?> 

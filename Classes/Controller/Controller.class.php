@@ -277,8 +277,10 @@
                     echo $this->display_errors();
                 }else
                 {
+                    Session::start();
                     Session::set('user_id',$result);
-                    header('Location: ../concept-master/pages/data-tables.php');
+                    print_r(Session::get('user_id'));
+                    //header('Location: ../concept-master/pages/data-tables.php');
                 }
             }
         }
@@ -292,7 +294,8 @@
         }
         public static function login_error_redirect($url)
         {
-            Session::set('error_flash','You have no permission to this page');
+            //Session::start();
+            //Session::set('error_flash','You have no permission to this page');
             header('Location: '.$url);
             //echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";
         }

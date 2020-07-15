@@ -1,5 +1,8 @@
 <?php
     include_once "../src/Autoload.inc.php";
+    //include_once "../Classes/Controller/Session.class.php";
+    //include_once "../Classes/Model/Database.class.php";
+    //include_once "../Classes/Controller/Controller.class.php";
     use Classes\Controller\Controller as Ctrl;
 ?>
 <!DOCTYPE html>
@@ -25,14 +28,11 @@
     <link rel="stylesheet" href="ogani/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="ogani/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="ogani/css/style.css" type="text/css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
     <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
     <style>
-        .log{
-            font-size:3.6rem;
-            font-weight:bold;
-            font-family: 'Pacifico', cursive;
-            color:darkred;
+        h4{
+            font-size: 4rem;
         }
     </style>
 </head>
@@ -146,7 +146,7 @@
                 <div class="col-lg-3">
                     <div class="header__logo text-center">
                         <!--a href="./index.html"><img src="ogani/img/logo.png" alt=""></a-->
-                        <h1 class='log my-4'>E-shop</h1>
+                        <h1 class='my-4'>Shopify</h1>
                     </div>
                 </div>
                 <div class="col-lg-6">
