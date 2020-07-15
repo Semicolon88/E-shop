@@ -1,5 +1,5 @@
 <?php
-    include_once "Autoload.inc.php";
+    //include_once "Autoload.inc.php";
     use Classes\Controller\Controller as Ctrl;
     if(isset($_POST['submit']))
     {
@@ -37,7 +37,6 @@
         }else{
             $obj->setFile($_FILES);
             $obj->upload_image();
-            //print_r($_FILES);
         }
         if(!empty($obj->error))
         {
@@ -146,5 +145,8 @@
         $obj->setData(['email'=>$email,'pword'=>$pword]);
         $obj->login();
 
+    }
+    if(isset($_SESSION['error_flash'])){
+        echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";
     }
 ?>
