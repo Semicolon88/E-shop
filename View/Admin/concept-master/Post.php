@@ -1,5 +1,6 @@
 <?php
     include_once "../../../src/Autoload.inc.php";
+    include_once "../../../src/requests.inc.php";
     include_once "../../../src/header.inc.php";
 ?>
 <div class="row">
@@ -8,7 +9,7 @@
             <div class="content">
                 <!--content-->
                 <?php
-                   include_once "../../../src/requests.inc.php";
+                   //include_once "../../../src/requests.inc.php";
                 ?>
                 <form action="Post.php<?=((isset($_GET['edit']))?'?edit='.$edit_id:'')?>" method="POST" id='form' enctype="multipart/form-data">
                     <div class="row my-4 mx-3">

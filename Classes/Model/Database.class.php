@@ -26,5 +26,5 @@
             }
         }
     }
-    Session::start();
+    //Session::start();
 ?>

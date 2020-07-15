@@ -209,7 +209,7 @@
             $exec = $stmt->execute([$id]);
             if($exec)
             {
-                header('Location: ../View/Admin/concept-master/pages/data-tables.php');
+                header('Location: pages/data-tables.php');
             }
         }
         public function display_errors()
@@ -274,9 +274,26 @@
                     echo $this->display_errors();
                 }else
                 {
+                    Session::start();
                     Session::set('user_id',$result);
-                    print_r(Session::get('user_id'));
+                    header('Location: ../concept-master/pages/data-tables.php');
                 }
+            }
+        }
+        public function is_logged_in()
+        {
+            if(isset($_SESSION['user_id']) && !empty($_SESSION['user_id']))
+            {
+                return true;
+            }
+            return false;
+        }
+        public function loggin_error_redirect($url)
+        {
+            if(!isset($_SESSION['user_id']))
+            {
+                Session::set('error_flash','You have no permission to this page');
+                header('Location: ../../Login/login.php');
             }
         }
     }

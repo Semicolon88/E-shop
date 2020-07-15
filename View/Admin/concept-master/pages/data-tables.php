@@ -1,6 +1,11 @@
 <?php
      include_once "../../../../src/Autoload.inc.php";
      include_once "../../../../src/test.php";
+     use Classes\Controller\Controller as Ctrl;
+     $data = new Ctrl;
+                                if(!$data->is_logged_in()){
+                                    $data->loggin_error_redirect("../../Login/login.php");
+                                }   
 ?>
 <div class="row">
 <!-- ============================================================== -->
@@ -23,11 +28,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                                use Classes\Controller\Controller as Ctrl;
-                                $data = new Ctrl;
-                                $data = $data->selectAll();
-                                if(!empty($data)):
+                            <?php 
+                                    $data = $data->selectAll();
+                                    if(!empty($data)):
                                     foreach($data as $row):
                             ?>
                                         <tr>
