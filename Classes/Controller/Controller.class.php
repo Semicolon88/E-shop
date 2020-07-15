@@ -1,6 +1,5 @@
 <?php
     namespace Classes\Controller;
-
     use Classes\Model\Database as DB;
 
     interface InsertFace
@@ -278,7 +277,6 @@
                     echo $this->display_errors();
                 }else
                 {
-                    //Session::start();
                     Session::set('user_id',$result);
                     header('Location: ../concept-master/pages/data-tables.php');
                 }
@@ -286,16 +284,17 @@
         }
         public static function is_logged_in()
         {
-            if(isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $_SESSION['user_id']['permission'] == 1)
+            if(isset($_SESSION['user_id']) && !empty($_SESSION['user_id']))
             {
                 return true;
             }
             return false;
         }
-        public static function loggin_error_redirect($url)
+        public static function login_error_redirect($url)
         {
-                Session::set('error_flash','You have no permission to this page');
-                header('Location: '.$url);
+            Session::set('error_flash','You have no permission to this page');
+            header('Location: '.$url);
+            //echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";
         }
     }
 

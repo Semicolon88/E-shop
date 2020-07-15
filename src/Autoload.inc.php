@@ -4,21 +4,28 @@
 
     function loadClass($class)
     {
-        if(strpos($_SERVER['REQUEST_URI'],'Admin') !== false)
+        $url = $_SERVER['REQUEST_URI'];
+        if(strpos($$url,'Admin') !== false)
         {
-            if(strpos($_SERVER['REQUEST_URI'],'pages') !== false)
+            if(strpos($url,'concept-master') !== false)
             {
-                require_once "../../../../".str_replace('\\','/',$class).".class.php";
-            }else
-            {
+                if(strpos($url,'pages')){
+                    require_once "../../../../".str_replace('\\','/',$class).".class.php";
+                }else{
+                    require_once "../../../".str_replace('\\','/',$class).".class.php";
+                }
+            }elseif(strpos($url,'Login') !== false){
                 require_once "../../../".str_replace('\\','/',$class).".class.php";
             }
-        }else if(strpos($_SERVER['REQUEST_URI'],'Classes') !== false)
+        }else if(strpos($url,'Classes') !== false)
         {
             require_once str_replace('\\','/',$class).".class.php";
-        }else if(strpos($_SERVER['REQUEST_URI'],'src') !== false)
+        }else if(strpos($url,'src') !== false)
         {
             require_once "../".str_replace('\\','/',$class).".class.php";
+        }elseif (strpos($url,'Controller') !== false) {
+            # code...
+            require_once str_replace('\\','/',$class).".class.php";
         }
     }
 ?>

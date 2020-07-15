@@ -1,5 +1,5 @@
 <?php
-    //include_once "Autoload.inc.php";
+    include_once "Autoload.inc.php";
     use Classes\Controller\Controller as Ctrl;
     if(isset($_POST['submit']))
     {

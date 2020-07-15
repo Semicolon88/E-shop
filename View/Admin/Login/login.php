@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,12 +29,17 @@
 			<div class="wrap-login100">
 				<div class="login100-pic js-tilt" data-tilt>
 					<img src="images/img-01.png" alt="IMG">
-				</div>
-
+                </div>
+                
+                <?php
+                    if(isset($_SESSION['error_flash'])){
+                        echo "<div class='bg-info mx-auto col-6'>".Session::get('error_flash')."</div>";
+                    }
+                ?>
 				<form action="<?=$_SERVER['PHP_SELF']?>" method="POST" class="login100-form validate-form">
 					<span class="login100-form-title">
 						Member Login
-					</span>
+                    </span>
                     <?php include_once "../../../src/requests.inc.php"?>
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input100" type="text" name="email" placeholder="Email">

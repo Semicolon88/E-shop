@@ -1,10 +1,9 @@
 <?php
     include_once "../../../../src/Autoload.inc.php";
     use Classes\Controller\Controller as Ctrl;
-    $data = new Ctrl;
-    if(!$data::is_logged_in()){
-        $data::loggin_error_redirect("../../Login/login.php");
-    }   
+    $user = new Ctrl;
+    if(!$user::is_logged_in())
+        $user::login_error_redirect("../../Login/login.php"); 
     include_once "../../../../src/test.php";
 ?>
 <div class="row">
@@ -13,7 +12,7 @@
 <!-- ============================================================== -->
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="container bg-white">
-            <a href="../post.php" class="btn btn-outline-dark  m-4">Add Product</a>
+            <a href="../Post.php" class="btn btn-outline-dark  m-4">Add Product</a>
             <div class="card-body">
                 <div class="table-responsive">
                      <table class="table table-striped  table-bordered fist text-center">
@@ -28,9 +27,9 @@
                         </thead>
                         <tbody>
                             <?php 
-
-                                    $data = $data->selectAll();
-                                    if(!empty($data)):
+                                $data = new Ctrl;
+                                $data = $data->selectAll();
+                                if(!empty($data)):
                                     foreach($data as $row):
                             ?>
                                         <tr>
@@ -77,10 +76,10 @@
                                             <td>
                                                 <div class="row justify-content-center">
                                                     <div class="col-4 text-center">
-                                                        <a href='../post.php?delete=<?=$row['id']?>' class="btn btn-ouline-success btn-sm edt-btn"><i class="fas fa-trash-alt"></i></i></a>
+                                                        <a href='../Post.php?delete=<?=$row['id']?>' class="btn btn-ouline-success btn-sm edt-btn"><i class="fas fa-trash-alt"></i></i></a>
                                                     </div>
                                                     <div class="col-4 text-center">
-                                                        <a href='../post.php?edit=<?=$row['id']?>' class="btn btn-ouline-success btn-sm edt-btn"><i class="fas fa-pencil-alt"></i></a>
+                                                        <a href='../Post.php?edit=<?=$row['id']?>' class="btn btn-ouline-success btn-sm edt-btn"><i class="fas fa-pencil-alt"></i></a>
                                                     </div>
                                                 </div>
                                             </td>
