@@ -1,6 +1,5 @@
 <?php
-    include_once "../Classes/Model/Database.class.php";
-    include_once "../Classes/Controller/Controller.class.php";
+    include_once "../src/Autoload.inc.php";
     use Classes\Controller\Controller as Ctrl;
 ?>
 <!DOCTYPE html>

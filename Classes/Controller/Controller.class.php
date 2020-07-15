@@ -248,6 +248,10 @@
                     $stmt->bindValue(":".$key,$value);
                 }
                 $exec = $stmt->execute();
+                if($exec)
+                {
+                    header('Location: ../../index.php');
+                }
             }
         }
         public function login()
@@ -274,27 +278,24 @@
                     echo $this->display_errors();
                 }else
                 {
-                    Session::start();
+                    //Session::start();
                     Session::set('user_id',$result);
                     header('Location: ../concept-master/pages/data-tables.php');
                 }
             }
         }
-        public function is_logged_in()
+        public static function is_logged_in()
         {
-            if(isset($_SESSION['user_id']) && !empty($_SESSION['user_id']))
+            if(isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $_SESSION['user_id']['permission'] == 1)
             {
                 return true;
             }
             return false;
         }
-        public function loggin_error_redirect($url)
+        public static function loggin_error_redirect($url)
         {
-            if(!isset($_SESSION['user_id']))
-            {
                 Session::set('error_flash','You have no permission to this page');
-                header('Location: ../../Login/login.php');
-            }
+                header('Location: '.$url);
         }
     }
 

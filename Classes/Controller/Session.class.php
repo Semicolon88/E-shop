@@ -13,6 +13,14 @@
                 self::$_sessionStarted = true;
             }
         }
+        public static function destroy()
+        {
+            if(self::$_sessionStarted == true)
+            {
+                session_destroy();
+                self::$_sessionStarted == false;
+            }
+        }
         public static function set($sess,$sessValue)
         {
             $_SESSION[$sess] = $sessValue;
