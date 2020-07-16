@@ -31,8 +31,11 @@
 
     <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
     <style>
+        h2{
+            font-size: 4rem;
+        }
         h4{
-            font-size: 2rem;
+            font-size:2rem;
         }
     </style>
 </head>
