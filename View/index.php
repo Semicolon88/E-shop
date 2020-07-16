@@ -1,9 +1,9 @@
 <?php
-    include_once "../src/Autoload.inc.php";
-    //include_once "../Classes/Controller/Session.class.php";
-    //include_once "../Classes/Model/Database.class.php";
-    //include_once "../Classes/Controller/Controller.class.php";
-    use Classes\Controller\Controller as Ctrl;
+    //include_once "../src/Autoload.inc.php";
+    include_once "../Classes/Model/Session.class.php";
+    include_once "../Classes/Model/Database.class.php";
+    include_once "../Classes/Controller/Controller.class.php";
+    //use Classes\Controller\Controller as Controller;
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -32,7 +32,7 @@
     <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
     <style>
         h4{
-            font-size: 4rem;
+            font-size: 2rem;
         }
     </style>
 </head>
@@ -302,7 +302,7 @@
             </div>
             <div class="row featured__filter">
                 <?php
-                    $obj = new Ctrl;
+                    $obj = new Controller;
                     $data = $obj->selectAll();
                     //print_r($data['0']);
                     $increment = 0;

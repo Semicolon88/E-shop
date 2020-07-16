@@ -1,7 +1,5 @@
 <?php
 
-    //include_once "../Model/Database.class.php";
-
 
     interface InsertFace
     {

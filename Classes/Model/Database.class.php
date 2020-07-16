@@ -1,9 +1,4 @@
 <?php
-    //namespace Classes\Model;
-    //include_once "../Controller/Session.class.php";
-    //use PDO;
-    //use PDOException;
-    //use Session;
 
     class Database
     {
@@ -27,5 +22,5 @@
         }
     }
     Session::start();
-    //Session::destroy();
+    Session::destroy();
 ?> 
