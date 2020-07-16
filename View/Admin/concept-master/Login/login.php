@@ -1,4 +1,8 @@
-
+<?php
+    include_once "../../../../Classes/Model/Session.class.php";
+    include_once "../../../../Classes/Model/Database.class.php";
+    include_once "../../../../Classes/Controller/Controller.class.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,16 +35,16 @@
 					<img src="images/img-01.png" alt="IMG">
                 </div>
                 
-                <?php
+                <!--?php
                     if(isset($_SESSION['error_flash'])){
                         echo "<div class='bg-info mx-auto col-6'>".Session::get('error_flash')."</div>";
                     }
-                ?>
+                ?-->
 				<form action="<?=$_SERVER['PHP_SELF']?>" method="POST" class="login100-form validate-form">
 					<span class="login100-form-title">
 						Member Login
-                    </span>
-                    <?php include_once "../../../src/requests.inc.php"?>
+					</span>
+                    <?php include_once "../../../../src/requests.inc.php"?>
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input100" type="text" name="email" placeholder="Email">
 						<span class="focus-input100"></span>

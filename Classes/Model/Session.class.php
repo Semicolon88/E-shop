@@ -1,5 +1,5 @@
 <?php
-    namespace Classes\Controller;
+    namespace Classes\Model;
 
     class Session
     {

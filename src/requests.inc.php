@@ -1,5 +1,5 @@
 <?php
-    include_once "Autoload.inc.php";
+    //include_once "Autoload.inc.php";
     use Classes\Controller\Controller as Ctrl;
     if(isset($_POST['submit']))
     {
@@ -146,7 +146,7 @@
         $obj->login();
 
     }
-    if(isset($_SESSION['error_flash'])){
+    /*if(isset($_SESSION['error_flash'])){
         echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";
-    }
+    }*/
 ?>

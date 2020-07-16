@@ -1,5 +1,6 @@
 <?php
     namespace Classes\Controller;
+    //include_once "../../src/Autoload.inc.php";
     use Classes\Model\Database as DB;
 
     interface InsertFace
@@ -277,10 +278,7 @@
                     echo $this->display_errors();
                 }else
                 {
-                    Session::start();
-                    Session::set('user_id',$result);
-                    print_r(Session::get('user_id'));
-                    //header('Location: ../concept-master/pages/data-tables.php');
+                    header('Location: ../pages/data-tables.php');
                 }
             }
         }
