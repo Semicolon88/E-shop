@@ -1,10 +1,8 @@
 <?php
-    namespace Classes\Controller;
 
-    include_once "../../src/Autoload.inc.php";
-    use Database;
+    //include_once "../Model/Database.class.php";
 
-    
+
     interface InsertFace
     {
         public function add();
@@ -280,6 +278,8 @@
                     echo $this->display_errors();
                 }else
                 {
+                    Session::start();
+                    Session::set('user_id',$result);
                     header('Location: ../pages/data-tables.php');
                 }
             }
@@ -294,8 +294,8 @@
         }
         public static function login_error_redirect($url)
         {
-            //Session::start();
-            //Session::set('error_flash','You have no permission to this page');
+            Session::start();
+            Session::set('error_flash','You have no permission to this page');
             header('Location: '.$url);
             //echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";
         }

@@ -1,6 +1,6 @@
 <?php
     //namespace Classes\Model;
-    include_once "../../src/Autoload.inc.php";
+    //include_once "../Controller/Session.class.php";
     //use PDO;
     //use PDOException;
     //use Session;

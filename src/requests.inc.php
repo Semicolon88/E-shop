@@ -1,9 +1,9 @@
 <?php
     //include_once "Autoload.inc.php";
-    use Classes\Controller\Controller as Ctrl;
+    //use Classes\Controller\Controller as Controller;
     if(isset($_POST['submit']))
     {
-        $obj = new Ctrl;
+        $obj = new Controller;
         $productName = $_POST['product_name'];
         $price = $_POST['price'];
         $listPrice = $_POST['list_price'];
@@ -49,7 +49,7 @@
     if(isset($_GET['edit']))
     {
         $edit_id = $_GET['edit'];
-        $edit_data = new Ctrl;
+        $edit_data = new Controller;
         $data = $edit_data->select_this($edit_id);
         $img = explode(',',$data['photo']);
 
@@ -96,7 +96,7 @@
     if(isset($_GET['delete']))
     {
         $delete_id = $_GET['delete'];
-        $obj = new Ctrl;
+        $obj = new Controller;
         $obj->delete_this($delete_id);
     }
     if(isset($_POST['data']))
@@ -119,7 +119,7 @@
         $email = $_POST['email'];
         $pword = $_POST['pword'];
         $rPword = $_POST['r-pword'];
-        $obj = new Ctrl;
+        $obj = new Controller;
         if($pword != $rPword)
         {
             $obj->error[] = "Password does not match";
@@ -141,7 +141,7 @@
     {
         $email = $_POST['email'];
         $pword = $_POST['pword'];
-        $obj = new Ctrl;
+        $obj = new Controller;
         $obj->setData(['email'=>$email,'pword'=>$pword]);
         $obj->login();
 

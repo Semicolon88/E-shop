@@ -9,6 +9,12 @@
                 var_dump($class);
                 require_once "../Model/".$class.".class.php";
             }
+        }elseif (strpos($url,'View') !== false) {
+            # code...
+            if(strpos($url,'pages')){
+                var_dump($class);
+                require_once "../../../../Classes/Controller/".$class.".class.php";
+            }
         }
     })
 ?>

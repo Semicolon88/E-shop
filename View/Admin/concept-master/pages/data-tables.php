@@ -2,10 +2,10 @@
     include_once "../../../../Classes/Model/Session.class.php";
     include_once "../../../../Classes/Model/Database.class.php";
     include_once "../../../../Classes/Controller/Controller.class.php";
-    use Classes\Controller\Controller as Ctrl;
-    $user = new Ctrl;
+    //use Classes\Controller\Controller as Controller;
+    $user = new Controller;
     if(!$user::is_logged_in())
-        $user::login_error_redirect("../../Login/login.php"); 
+        $user::login_error_redirect("../Login/login.php"); 
     include_once "../../../../src/test.php";
 ?>
 <div class="row">
@@ -29,7 +29,7 @@
                         </thead>
                         <tbody>
                             <?php 
-                                $data = new Ctrl;
+                                $data = new Controller;
                                 $data = $data->selectAll();
                                 if(!empty($data)):
                                     foreach($data as $row):
