@@ -2,7 +2,7 @@
     include_once "../../../Classes/Model/Session.class.php";
     include_once "../../../Classes/Model/Database.class.php";
     include_once "../../../Classes/Controller/Controller.class.php"; 
-    //use Classes\Controller\Controller as Controller;
+   
     $data = new Controller;
     if(!$data::is_logged_in()){
         $data::login_error_redirect("Login/login.php");
@@ -15,9 +15,6 @@
         <div class="card">
             <div class="content">
                 <!--content-->
-                <!--?php
-                   include_once "../../../src/requests.inc.php";
-                ?-->
                 <form action="Post.php<?=((isset($_GET['edit']))?'?edit='.$edit_id:'')?>" method="POST" id='form' enctype="multipart/form-data">
                     <div class="row my-4 mx-3">
                         <div class="form-group col-12 col-md-4 col-sm-12">

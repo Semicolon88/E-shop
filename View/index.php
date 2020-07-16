@@ -1,9 +1,7 @@
 <?php
-    //include_once "../src/Autoload.inc.php";
     include_once "../Classes/Model/Session.class.php";
     include_once "../Classes/Model/Database.class.php";
     include_once "../Classes/Controller/Controller.class.php";
-    //use Classes\Controller\Controller as Controller;
 ?>
 <!DOCTYPE html>
 <html lang="zxx">

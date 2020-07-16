@@ -282,7 +282,7 @@
                 }
             }
         }
-        public static function is_logged_in()
+        static public function is_logged_in()
         {
             if(isset($_SESSION['user_id']) && !empty($_SESSION['user_id']))
             {

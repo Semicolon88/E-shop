@@ -88,8 +88,7 @@
             }else
             {
                 $edit_data->setData($fields);
-                $exec = $edit_data->update($edit_id);
-                //echo "whats wrong?";
+                $edit_data->update($edit_id);
             }
         }           
     }

@@ -22,5 +22,5 @@
         }
     }
     Session::start();
-    Session::destroy();
+    //Session::destroy();
 ?> 
