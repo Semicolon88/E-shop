@@ -1,9 +1,11 @@
 <?php
-    include_once "../../../src/Autoload.inc.php"; 
-    use Classes\Controller\Controller as Ctrl;
-    $data = new Ctrl;
+    include_once "../../../Classes/Model/Session.class.php";
+    include_once "../../../Classes/Model/Database.class.php";
+    include_once "../../../Classes/Controller/Controller.class.php"; 
+    //use Classes\Controller\Controller as Controller;
+    $data = new Controller;
     if(!$data::is_logged_in()){
-        $data::login_error_redirect("../Login/login.php");
+        $data::login_error_redirect("Login/login.php");
     }
     include_once "../../../src/requests.inc.php";
     include_once "../../../src/header.inc.php";
