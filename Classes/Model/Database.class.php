@@ -1,11 +1,11 @@
 <?php
-    namespace Classes\Model;
-    //include_once "../../src/Autoload.inc.php";
-    use PDO;
-    use PDOException;
-    use Classes\Model\Session as Session;
+    //namespace Classes\Model;
+    include_once "../../src/Autoload.inc.php";
+    //use PDO;
+    //use PDOException;
+    //use Session;
 
-    class Database extends Session
+    class Database
     {
         private $host = "localhost";
         private $user = "root";

@@ -1,8 +1,10 @@
 <?php
     namespace Classes\Controller;
-    //include_once "../../src/Autoload.inc.php";
-    use Classes\Model\Database as DB;
 
+    include_once "../../src/Autoload.inc.php";
+    use Database;
+
+    
     interface InsertFace
     {
         public function add();
@@ -10,7 +12,7 @@
         public function validate(); 
     }
 
-    class Controller extends DB implements InsertFace
+    class Controller extends Database implements InsertFace
     {
         public $data;
         public $files;
