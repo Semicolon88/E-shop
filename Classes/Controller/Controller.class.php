@@ -248,7 +248,7 @@
                 $exec = $stmt->execute();
                 if($exec)
                 {
-                    header('Location: ../../index.php');
+                    header('Location: ../../../index.php');
                 }
             }
         }

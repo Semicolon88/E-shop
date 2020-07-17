@@ -1,3 +1,8 @@
+<?php
+    include_once "../../../../Classes/Model/Session.class.php";
+    include_once "../../../../Classes/Model/Database.class.php";
+    include_once "../../../../Classes/Controller/Controller.class.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +39,7 @@
 					<span class="login100-form-title">
 						Member Sign up
 					</span>
-                    <?php include_once "../../../src/requests.inc.php"?>
+                    <?php include_once "../../../../src/requests.inc.php"?>
 					<div class="wrap-input100 validate-input m-t-9" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input100" type="text" name="email" placeholder="Email">
 						<span class="focus-input100"></span>
