@@ -295,7 +295,6 @@
             Session::start();
             Session::set('error_flash','You have no permission to this page');
             header('Location: '.$url);
-            //echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";
         }
     }
 
