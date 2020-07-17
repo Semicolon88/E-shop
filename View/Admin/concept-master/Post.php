@@ -3,9 +3,9 @@
     include_once "../../../Classes/Model/Database.class.php";
     include_once "../../../Classes/Controller/Controller.class.php"; 
    
-    $data = new Controller;
-    if(!$data::is_logged_in()){
-        $data::login_error_redirect("Login/login.php");
+    $user = new Controller;
+    if(!$user::is_logged_in()){
+        $user::login_error_redirect("Login/login.php");
     }
     include_once "../../../src/requests.inc.php";
     include_once "../../../src/header.inc.php";

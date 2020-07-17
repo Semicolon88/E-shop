@@ -16,7 +16,7 @@
         {
             if(self::$_sessionStarted == true)
             {
-                session_destroy();
+                session_abort();
                 self::$_sessionStarted == false;
             }
         }
