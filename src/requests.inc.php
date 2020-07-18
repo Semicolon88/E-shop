@@ -113,6 +113,8 @@
     }
     if(isset($_POST['signup']))
     {
+        $firstName = $_POST['first_name'];
+        $lastName = $_POST['last_name'];
         $email = $_POST['email'];
         $pword = $_POST['pword'];
         $rPword = $_POST['r-pword'];
@@ -122,6 +124,8 @@
             $obj->error[] = "Password does not match";
         }
         $fields = [
+            'first_name'=>$firstName,
+            'last_name'=>$lastName,
             'email'=>$email,
             'pword'=>password_hash($pword,PASSWORD_DEFAULT)
         ];
