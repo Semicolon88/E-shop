@@ -292,7 +292,8 @@
         public static function login_error_redirect($url)
         {
             Session::set('error_flash','You have no permission to this page');
-            if(isset($_SESSION['user_id'])){
+            if(isset($_SESSION['user_id']))
+            {
                 unset($_SESSION['error_flash']);
             }
             header('Location: '.$url);
