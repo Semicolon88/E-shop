@@ -1,6 +1,4 @@
 <?php
-    //include_once "Autoload.inc.php";
-    //use Classes\Controller\Controller as Controller;
     if(isset($_POST['submit']))
     {
         $obj = new Controller;
@@ -144,6 +142,10 @@
         $obj->setData(['email'=>$email,'pword'=>$pword]);
         $obj->login();
 
+    }
+    if(isset($_GET['logout'])){
+        $obj = new Controller;
+        $obj::logOut();
     }
     /*if(isset($_SESSION['error_flash'])){
         echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";

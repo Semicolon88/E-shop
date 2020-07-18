@@ -297,6 +297,14 @@
             }
             header('Location: '.$url);
         }
+        public static function logOut()
+        {
+            if(isset($_SESSION))
+            {
+                Session::destroy();
+            }
+            header("Location: ../View/Admin/concept-master/Login/login.php");
+        }
     }
 
 ?>

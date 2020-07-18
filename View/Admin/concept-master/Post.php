@@ -73,7 +73,7 @@
                                     <button class="input-group-text btn" id="addon-wrapping">Add Sizes</button>
                                 </div>
                                 <!--div class="form-g col-md-5"-->
-                                    <input type="blank" id='val' name='sizes' class='form-control mx-4'>
+                                    <input type="blank" id='val' name='sizes' class='form-control mx-4' value="<?=((isset($_GET['edit']))?$data["sizes"]:'')?>">
                                 <!--/div-->
                             </div>
                         </div>
