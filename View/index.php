@@ -134,9 +134,26 @@
                                     <li><a href="#">English</a></li>
                                 </ul>
                             </div>
-                            <div class="header__top__right__auth">
-                                <a href="Admin/concept-master/Login/login.php"><i class="fa fa-user"></i> Login</a>
-                            </div>
+                            <?php
+                                $user = new Controller;
+                                if($user::is_logged_in()):
+                            ?>
+                                    <div class="header__top__right__auth">
+                                        <a href="Admin/concept-master/Login/login.php"><i class="fa fa-user"></i> Logged in</a>
+                                    </div>
+                            <?php
+                                else:
+                            ?> 
+                                    <div class="header__top__right__aut header__top__right__language">
+                                            <a class='dropdown-toggle' type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Login</a>
+                                            <ul>
+                                                <li><a href="Admin/concept-master/Login/login.php">Log in</a></li>
+                                                <li><a href="Admin/concept-master/Login/signup.php">Sign up</a></li>
+                                            </ul>
+                                    </div>   
+                            <?php
+                                endif;
+                            ?>               
                         </div>
                     </div>
                 </div>
