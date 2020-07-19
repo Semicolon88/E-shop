@@ -5,7 +5,7 @@
         private $host = "localhost";
         private $user = "root";
         private $pwd = "";
-        private $db = "Shopify";
+        private $db = "E-shop";
 
         protected $DBHandler;
 

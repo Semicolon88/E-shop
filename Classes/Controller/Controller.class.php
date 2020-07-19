@@ -304,7 +304,7 @@
             {
                 Session::destroy();
             }
-            header("Location: ../View/Admin/concept-master/Login/login.php");
+            header("Location: ../View/index.php");
         }
     }
 

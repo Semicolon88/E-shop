@@ -29,11 +29,17 @@
 
     <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
         h2{
             font-size: 4rem;
         }
         h4{
             font-size:2rem;
+        }
+        h1{
+            font-size: 4rem;
+            font-family: 'Pacifico', cursive;
+            color : #7FAD39;
         }
     </style>
 </head>
@@ -68,18 +74,44 @@
                     <li><a href="#">English</a></li>
                 </ul>
             </div>
-            <div class="header__top__right__auth">
-                <a href="Admin/concept-master/Login/login.php"><i class="fa fa-user"></i> Login</a>
-            </div>
+            <?php
+                $user = new Controller;
+                if($user::is_logged_in()):
+            ?>
+                    <div class="header__top__right__language">
+                        <div>
+                            <i class="fa fa-user"></i>&nbsp;<?=Session::get('user_id')['last_name']?>
+                        </div>
+                        <ul>
+                            <li><a href="Admin/concept-master/Login/login.php">Account</a></li>
+                            <li><a href="Admin/concept-master/Login/signup.php">Orders</a></li>
+                            <li><a href="Admin/concept-master/Login/login.php">Cart</a></li>
+                            <li><a href="Admin/concept-master/Login/signup.php">Saved items</a></li>
+                            <li><a href="../src/log_out.php?logout=true">Log out</a></li>
+                        </ul>
+                    </div>
+            <?php
+                else:
+            ?> 
+                    <div class="header__top__right__language">
+                        <a class='dropdown-toggle' type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Login</a>
+                        <ul>
+                            <li><a href="Admin/concept-master/Login/login.php">Log in</a></li>
+                            <li><a href="Admin/concept-master/Login/signup.php">Sign up</a></li>
+                        </ul>
+                    </div>   
+            <?php
+                endif;
+            ?>        
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="./index.html">Home</a></li>
+                <li class="active"><a href="index.php">Home</a></li>
                 <li><a href="./shop-grid.html">Shop</a></li>
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                        <li><a href="ogani/shoping-cart.html">Shoping Cart</a></li>
                         <li><a href="./checkout.html">Check Out</a></li>
                         <li><a href="./blog-details.html">Blog Details</a></li>
                     </ul>
@@ -97,7 +129,7 @@
         </div>
         <div class="humberger__menu__contact">
             <ul>
-                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                <li><i class="fa fa-envelope"></i> E-shop@gmail.com</li>
                 <li>Free Shipping for all Order of $99</li>
             </ul>
         </div>
@@ -141,12 +173,11 @@
                                     <div class="header__top__right__language">
                                         <!-- href="Admin/concept-master/Login/login.php"--><div><i class="fa fa-user"></i>&nbsp;<?=Session::get('user_id')['last_name']?></div>
                                         <ul>
-                                            <li><a href="Admin/concept-master/Login/login.php">Log in</a></li>
-                                            <li><a href="Admin/concept-master/Login/signup.php">Sign up</a></li>
-                                            <li><a href="Admin/concept-master/Login/login.php">Log in</a></li>
-                                            <li><a href="Admin/concept-master/Login/signup.php">Sign up</a></li>
-                                            <li><a href="Admin/concept-master/Login/login.php">Log in</a></li>
-                                            <li><a href="Admin/concept-master/Login/signup.php">Sign up</a></li>
+                                            <li><a href="Admin/concept-master/Login/login.php">Account</a></li>
+                                            <li><a href="Admin/concept-master/Login/signup.php">Orders</a></li>
+                                            <li><a href="Admin/concept-master/Login/login.php">Cart</a></li>
+                                            <li><a href="Admin/concept-master/Login/signup.php">Saved items</a></li>
+                                            <li><a href="../src/log_out.php?logout=true">Log out</a></li>
                                         </ul>
                                     </div>
                             <?php
@@ -172,18 +203,18 @@
                 <div class="col-lg-3">
                     <div class="header__logo text-center">
                         <!--a href="./index.html"><img src="ogani/img/logo.png" alt=""></a-->
-                        <h1 class='my-4'>Shopify</h1>
+                        <h1 class='my-4'>E-shop</h1>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./index.html">Home</a></li>
+                            <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="./shop-grid.html">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                                    <li><a href="ogani/shoping-cart.html">Shoping Cart</a></li>
                                     <li><a href="./checkout.html">Check Out</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
