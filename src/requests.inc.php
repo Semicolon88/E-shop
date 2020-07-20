@@ -1,4 +1,7 @@
 <?php
+    include_once "../Classes/Model/Session.class.php";
+    include_once "../Classes/Model/Database.class.php";
+    include_once "../Classes/Controller/Controller.class.php";
     if(isset($_POST['submit']))
     {
         $obj = new Controller;
@@ -154,4 +157,8 @@
     /*if(isset($_SESSION['error_flash'])){
         echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";
     }*/
+    if(isset($_POST['cart'])){
+        $data = new Controller;
+        $data->add_cart($_POST['cart_id']);
+    }
 ?>
