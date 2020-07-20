@@ -1,4 +1,5 @@
 <?php
+    ini_set('display_errors',true);
     include_once "../Classes/Model/Session.class.php";
     include_once "../Classes/Model/Database.class.php";
     include_once "../Classes/Controller/Controller.class.php";
@@ -111,7 +112,7 @@
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="ogani/shoping-cart.html">Shoping Cart</a></li>
+                        <li><a href="ogani/shoping-cart.php">Shoping Cart</a></li>
                         <li><a href="./checkout.html">Check Out</a></li>
                         <li><a href="./blog-details.html">Blog Details</a></li>
                     </ul>
@@ -214,7 +215,7 @@
                             <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="ogani/shoping-cart.html">Shoping Cart</a></li>
+                                    <li><a href="ogani/shoping-cart.php">Shoping Cart</a></li>
                                     <li><a href="./checkout.html">Check Out</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
@@ -390,7 +391,10 @@
                                             <a href="#" class='btn btn-outline-success'><i class="fa fa-heart"></i>&nbsp;Buy Now</a>
                                         </div>
                                         <div class="col-6 text-center">
-                                            <a href="#" class='btn btn-secondary'><i class="fa fa-shopping-cart"></i>&nbsp;Add to Cart</a>
+                                            <form action="../src/requests.inc.php" method="post">
+                                            <input type="hidden" name="cart_id" value='<?=$data[$increment]['id']?>'>
+                                                <input type="submit" name='cart' class='btn btn-secondary' value='Add to Cart'>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -768,6 +772,23 @@
     <script src="ogani/js/main.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+    <script>
+        let get = (id)=>{
+            let productId = id.split('-')[1];
+            //let data = 
+            //alert(productId);
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = ()=>{
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    console.log("sent successfully");
+                }else{
+                    console.log('something went wrong');
+                }
+            }
+            xhr.open('POST','ogani/shoping-cart.php',true);
+            xhr.send(productId);
+        }
+    </script>
 
 </body>
 
