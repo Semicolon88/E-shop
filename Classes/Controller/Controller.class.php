@@ -1,5 +1,4 @@
 <?php
-
     interface InsertFace
     {
         public function add();
@@ -305,6 +304,36 @@
                 Session::destroy();
             }
             header("Location: ../View/index.php");
+        }
+        public function add_cart($id){
+            $cart_data = $this->select_this($id);
+            $key = [];
+            $value = [];
+            $field = ['product_name','list_price','sizes','photo'];
+            for($i = 0;$i < count($field);$i++){
+                if(in_array($field[$i],array_keys($cart_data))){
+                    $index = $field[$i];
+                    $key[] =  $field[$i];
+                    $value[] = $cart_data[$index];
+                }
+            }
+            $keys = implode(',',$key);
+            $values = implode(', :',$key);
+
+            $sequel = "INSERT INTO cart($keys) VALUES(:".$values.")";
+            $stmt = $this->DBHandler->prepare($sequel);
+            for($i = 0;$i < count($key);$i++){
+                $stmt->bindValue(':'.$key[$i],$value[$i]);
+            }
+            $exec = $stmt->execute();
+            if($exec){
+                header('Location: ../View/index.php');
+            }
+        }
+        public function cart(){
+            $sequel = "SELECT * FROM cart WHERE active = 1";
+            $result = $this->DBHandler->query($sequel);
+            return $result;
         }
     }
 
