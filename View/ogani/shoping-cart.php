@@ -293,13 +293,13 @@
                                         </td>
                                         <td class="shoping__cart__quantity">
                                         <div class="quantity">
-                                            <div class="pro-qty" id="price-<?=$indexer?>">
+                                            <div class="pro-qty" id="qty-<?=$indexer?>" onclick="getId(this.id)">
                                                 <input type="text" value="1">
                                             </div>
                                         </div>
                                     </td>
-                                        <td class="shoping__cart__total">
-                                            $110.00
+                                        <td class="shoping__cart__total" id="price-<?=$indexer?>">
+                                            <?=$data['list_price']?>
                                         </td>
                                         <td class="shoping__cart__item__close">
                                             <span class="icon_close"></span>
@@ -338,7 +338,7 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>$454.98</span></li>
+                            <li>Subtotal <span id='total'></span></li>
                             <li>Total <span>$454.98</span></li>
                         </ul>
                         <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
@@ -428,36 +428,52 @@
     <script src="js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
     <script>
-    /*let ide;
-        let getId = (id)=>{
+        let totalPrice ;
+        let ide;
+        let getId = function(id){
             ide = id;
-            console.log(ide);
         }
-        var proQty = $('.pro-qty');
-    proQty.prepend('<span class="dec qtybtn">-</span>');
-    proQty.append('<span class="inc qtybtn">+</span>');
-    proQty.on('click', '.qtybtn', function () {
-        var $button = $(this);
-        var oldValue = $button.parent().find('input').val();
-        if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            // Don't allow decrementing below zero
-            if (oldValue == 1) {
-                var newVal = parseFloat(oldValue);
-            } else {
-                newVal = parseFloat(oldValue) - 1;
+        let addPrice = (...total)=>{
+            let res = 0;
+            for(let price of total){
+                res = res + price
             }
+            return res;
         }
-        $button.parent().find('input').val(newVal);
-        //let ele = proQty.closest('tr');
-        //if(ele.children('td').hasClass('shoping__cart__total')){
-            //console.log($('#price-1').text());
-        //}
-        
-    });*/
-    </script>
+        //console.log(addPrice(totalPrice));
+        var proQty = $('.pro-qty');
+        proQty.prepend('<span class="dec qtybtn">-</span>');
+        proQty.append('<span class="inc qtybtn">+</span>');
+        proQty.on('click', '.qtybtn', function () {
+            var $button = $(this);
+            var oldValue = $button.parent().find('input').val();
+            if ($button.hasClass('inc')) {
+                var newVal = parseFloat(oldValue) + 1;
+            } else {
+                // Don't allow decrementing below zero
+                if (oldValue == 1) {
+                    var newVal = parseFloat(oldValue);
+                } else {
+                    newVal = parseFloat(oldValue) - 1;
+                }
+            }
+            $button.parent().find('input').val(newVal);
+            let parent = $("#"+ide).parent().parent().parent();
+            let data = parent.children('td').map(function(){
+                return $(this).text();
+            }).get();
 
+            data[2] = newVal;
+            data[3] = newVal * data[1];
+            let id = ide.split('-')[1];
+            $("#price-"+id).text(data[3]); 
+            let total = $(".shoping__cart__total").map(function(){
+                return $(this).text();
+            }).get();
+            totalPrice = addPrice(...total);
+            console.log(totalPrice);
+        });
+    </script>
 </body>
 
 </html>
