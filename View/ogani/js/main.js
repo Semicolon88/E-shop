@@ -201,8 +201,8 @@
 
     /*-------------------
 		Quantity change
-	--------------------- */
-    var proQty = $('.pro-qty');
+    --------------------- */
+   var proQty = $('.pro-qty');
     proQty.prepend('<span class="dec qtybtn">-</span>');
     proQty.append('<span class="inc qtybtn">+</span>');
     proQty.on('click', '.qtybtn', function () {
@@ -212,13 +212,19 @@
             var newVal = parseFloat(oldValue) + 1;
         } else {
             // Don't allow decrementing below zero
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
+            if (oldValue == 1) {
+                var newVal = parseFloat(oldValue);
             } else {
-                newVal = 0;
+                newVal = parseFloat(oldValue) - 1;
             }
         }
         $button.parent().find('input').val(newVal);
+        /*let ele = proQty.closest('tr');
+        if(ele.children('td').hasClass('shoping__cart__total')){
+            console.log($('#price-1').text());
+        }*/
+        
+
     });
 
 })(jQuery);

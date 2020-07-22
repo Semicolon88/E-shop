@@ -270,88 +270,46 @@
                                 <?php
                                    $cart = new Controller;
                                    $cart_data = $cart->cart();
+                                   $indexer = 0;
                                    if(!empty($cart_data)):
                                     foreach($cart_data as $data):
                                         $image = explode(',',$data['photo']);
                                 ?>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <div class="fotorama" style='width:270px;height:150px;'>
-                                            <?php
-                                                foreach($image as $img):
-                                            ?>
-                                                    <img src="<?=$img?>" alt="img">
-                                            <?php
-                                                endforeach;
-                                            ?>
-                                        </div>
-                                        <h5 style='font-size:bold;font:italic;'><?=$data['product_name']?></h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        <?=$data['list_price']?>
-                                    </td>
-                                    <td class="shoping__cart__quantity">
+                                    <tr>
+                                        <td class="shoping__cart__item">
+                                            <div class="fotorama" style='width:270px;height:150px;'>
+                                                <?php
+                                                    foreach($image as $img):
+                                                ?>
+                                                        <img src="<?=$img?>" alt="img">
+                                                <?php
+                                                    endforeach;
+                                                ?>
+                                            </div>
+                                            <h5 style='font-size:bold;font:italic;'><?=$data['product_name']?></h5>
+                                        </td>
+                                        <td class="shoping__cart__price">
+                                            <?=$data['list_price']?>
+                                        </td>
+                                        <td class="shoping__cart__quantity">
                                         <div class="quantity">
-                                            <div class="pro-qty">
+                                            <div class="pro-qty" id="price-<?=$indexer?>">
                                                 <input type="text" value="1">
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="shoping__cart__total">
-                                        $110.00
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
+                                        <td class="shoping__cart__total">
+                                            $110.00
+                                        </td>
+                                        <td class="shoping__cart__item__close">
+                                            <span class="icon_close"></span>
+                                        </td>
+                                    </tr>
                                 <?php
+                                $indexer++;
                                 endforeach;
                                     endif;
                                 ?>
-                                <!--tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-2.jpg" alt="">
-                                        <h5>Fresh Garden Vegetable</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        $39.00
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        $39.99
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-3.jpg" alt="">
-                                        <h5>Organic Bananas</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        $69.00
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        $69.99
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr-->
                             </tbody>
                         </table>
                     </div>
@@ -469,6 +427,36 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+    <script>
+    /*let ide;
+        let getId = (id)=>{
+            ide = id;
+            console.log(ide);
+        }
+        var proQty = $('.pro-qty');
+    proQty.prepend('<span class="dec qtybtn">-</span>');
+    proQty.append('<span class="inc qtybtn">+</span>');
+    proQty.on('click', '.qtybtn', function () {
+        var $button = $(this);
+        var oldValue = $button.parent().find('input').val();
+        if ($button.hasClass('inc')) {
+            var newVal = parseFloat(oldValue) + 1;
+        } else {
+            // Don't allow decrementing below zero
+            if (oldValue == 1) {
+                var newVal = parseFloat(oldValue);
+            } else {
+                newVal = parseFloat(oldValue) - 1;
+            }
+        }
+        $button.parent().find('input').val(newVal);
+        //let ele = proQty.closest('tr');
+        //if(ele.children('td').hasClass('shoping__cart__total')){
+            //console.log($('#price-1').text());
+        //}
+        
+    });*/
+    </script>
 
 </body>
 
