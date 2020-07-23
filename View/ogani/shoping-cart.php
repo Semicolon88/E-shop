@@ -469,7 +469,7 @@
                 } 
             }).get();
             total.forEach((data)=>{
-                res = res + parseInt(data);
+                res = res + Number(data);
             })
             $('#total').text("$ "+res);
         });
