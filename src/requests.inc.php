@@ -161,4 +161,7 @@
         $data = new Controller;
         $data->add_cart($_POST['cart_id']);
     }
+    if(isset($_POST['Address'])){
+        print_r($_POST);
+    }
 ?>
