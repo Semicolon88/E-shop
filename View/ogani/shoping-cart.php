@@ -271,8 +271,10 @@
                                    $cart = new Controller;
                                    $cart_data = $cart->cart();
                                    $indexer = 0;
+                                   $total = 0;
                                    if(!empty($cart_data)):
                                     foreach($cart_data as $data):
+                                        $total = $total + $data['list_price'];
                                         $image = explode(',',$data['photo']);
                                 ?>
                                     <tr>
@@ -338,7 +340,7 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span id='total'></span></li>
+                            <li>Subtotal <span id='total'><?="$".$total?></span></li>
                             <li>Total <span>$454.98</span></li>
                         </ul>
                         <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
@@ -429,18 +431,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
     <script>
         let totalPrice ;
-        let ide;
+        let ele;
         let getId = function(id){
-            ide = id;
+            ele = id;
         }
-        let addPrice = (...total)=>{
-            let res = 0;
-            for(let price of total){
-                res = res + price
-            }
-            return res;
-        }
-        //console.log(addPrice(totalPrice));
         var proQty = $('.pro-qty');
         proQty.prepend('<span class="dec qtybtn">-</span>');
         proQty.append('<span class="inc qtybtn">+</span>');
@@ -458,20 +452,26 @@
                 }
             }
             $button.parent().find('input').val(newVal);
-            let parent = $("#"+ide).parent().parent().parent();
+            let parent = $("#"+ele).parent().parent().parent();
             let data = parent.children('td').map(function(){
                 return $(this).text();
             }).get();
 
             data[2] = newVal;
             data[3] = newVal * data[1];
-            let id = ide.split('-')[1];
-            $("#price-"+id).text(data[3]); 
-            let total = $(".shoping__cart__total").map(function(){
-                return $(this).text();
+            let idNum = ele.split('-')[1];
+            $("#price-"+idNum).text(data[3]);
+            let paren = proQty.parent().parent().parent();
+            let res = 0; 
+            let total = paren.children("td").map(function(){
+                if($(this).hasClass("shoping__cart__total")){
+                    return $(this).text();
+                } 
             }).get();
-            totalPrice = addPrice(...total);
-            console.log(totalPrice);
+            total.forEach((data)=>{
+                res = res + parseInt(data);
+            })
+            $('#total').text("$ "+res);
         });
     </script>
 </body>
