@@ -34,9 +34,15 @@
 
     class Payment
     {
+        public $amount;
+        
+        public function __construct($amount)
+        {
+            $this->amount = $amount;
+        }
         public function buyNow(PaymentInterface $payType) 
         {
-            $payType->payNow(4000);
+            $payType->payNow($this->amount);
         }
     }
 ?>
