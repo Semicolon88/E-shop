@@ -2,6 +2,7 @@
     include_once "../Classes/Model/Session.class.php";
     include_once "../Classes/Model/Database.class.php";
     include_once "../Classes/Controller/Controller.class.php";
+    include_once "../Classes/Controller/Payment.class.php";
     if(isset($_POST['submit']))
     {
         $obj = new Controller;
@@ -162,6 +163,19 @@
         $data->add_cart($_POST['cart_id']);
     }
     if(isset($_POST['Address'])){
-        print_r($_POST);
+        $obj = new Controller;
+        foreach($_POST as $key => $value){
+            if(empty($_POST[$key])){
+                $obj->error[] =  $key." is required!";
+            }
+        }
+        if(empty($obj->error)){
+            $payType = $_POST['PAY_TYPE'];
+            $cardType = new $payType;
+            $buy = new Payment;
+            $buy->buyNow($cardType);
+        }else{
+            echo $obj->display_errors();
+        }
     }
 ?>

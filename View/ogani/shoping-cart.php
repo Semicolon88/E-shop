@@ -429,6 +429,7 @@
         </button>
       </div>
       <div class="modal-body">
+      <div class="bg-info text-center"><p class="text-danger" id='error'></p></div>
         <div class="" style="display:inline" id="step1">
             <form action="">
                 <div class="form-group col-12">
@@ -439,7 +440,7 @@
                     <label for="pay_type">Choose Payment Type</label><br/>
                     <select name="pay_type" id="pay_type">
                         <?php
-                            $card_type = ['Verve','Master','Visa','Paypal','Bank Transfer'];
+                            $card_type = ['Verve','Mastercard','Visa','Paypal','Bank Transfer'];
                             for($i = 0; $i < count($card_type);++$i):
                         ?>
                                 <option value="<?=$card_type[$i]?>"><?=$card_type[$i]?></option>
@@ -553,21 +554,13 @@
                 'Address' : $("#ad").val(),
                 'PAY_TYPE' : $("#pay_type").val(),
             }
-            /*let xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = ()=>{
-                if((xhr.readyState == 4) && (xhr.status == 200)){
-                    console.log(xhr.responseText);
-                }
-            }
-            xhr.open('POST','../../src/requests.inc.php');
-            xhr.send(data);*/
-
             $.ajax({
                 url : '../../src/requests.inc.php',
                 method : 'POST',
                 data : data,
                 success : function(res){
                     console.log(res);
+                    $('#error').text(res);
                 }
             })
         }
