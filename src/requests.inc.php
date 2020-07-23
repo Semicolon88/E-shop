@@ -172,7 +172,7 @@
         if(empty($obj->error)){
             $payType = $_POST['PAY_TYPE'];
             $cardType = new $payType;
-            $buy = new Payment;
+            $buy = new Payment(intval(trim($_POST['AMOUNT'],'$')));
             $buy->buyNow($cardType);
         }else{
             echo $obj->display_errors();
