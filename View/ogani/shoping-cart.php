@@ -240,7 +240,7 @@
                     <div class="breadcrumb__text">
                         <h2>Shopping Cart</h2>
                         <div class="breadcrumb__option">
-                            <a href="../index.phphtml">Home</a>
+                            <a href="../index.php">Home</a>
                             <span>Shopping Cart</span>
                         </div>
                     </div>
@@ -429,11 +429,67 @@
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <div class="" style="display:inline" id="step1">
+            <form action="">
+                <div class="form-group col-12">
+                    <label for="Address">Shipping Address</label>
+                    <input type="text"id='ad' class="form-control">
+                </div>
+                <div class="form-group col-12">
+                    <label for="pay_type">Choose Payment Type</label><br/>
+                    <select name="pay_type" id="pay_type">
+                        <?php
+                            $card_type = ['Verve','Master','Visa','Paypal','Bank Transfer'];
+                            for($i = 0; $i < count($card_type);++$i):
+                        ?>
+                                <option value="<?=$card_type[$i]?>"><?=$card_type[$i]?></option>
+                        <?php
+                            endfor;
+                        ?>        
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="" style="display:none" id="step1">
+            <form action="">
+                <div class="form-group col-12">
+                    <label for="name">Card Holder's Name</label>
+                    <input type="text" id='name' class="form-control">
+                </div>
+                <div class="form-group col-12">
+                    <label for="Cnum">Card Number</label>
+                    <input type="text" id='Cnum' class="form-control">
+                </div>
+                <div class="form-group col-4">
+                    <label for="cvc">CVC</label>
+                    <input type="text" id='cvc' class="form-control">
+                </div>
+                <div class="form-group col-12">
+                    <label for="month">Expire Month</label><br>
+                    <select name="exp-month" class="col-4" id="month">
+                        <?php for($i = 1;$i <= 12;++$i):?>
+                            <option value="<?=$i?>"><?=$i?></option>
+                        <?php endfor;?>
+                    </select>
+                </div><br/><br/>
+                <div class="form-group col-12">
+                    <label for="year">Expire Year</label><br>
+                    <select name="exp-year" class='col-12' id="year">
+                        <?php $year = date('Y');?>
+                            <?php for($i = 1;$i <= 10;++$i):?>
+                                <option value="<?=$year?>"><?=$year?></option>
+                            <?php $year++;?>
+                        <?php endfor;?>
+                    </select>
+                </div>
+            </form>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" id='next' onclick='validatePayType();'>Next >></button>
+        <button type="button" class="btn btn-primary" id='back' style="display:none" onclick='back();'><< Back</button>
+        <button type="button" class="btn btn-primary" id='next' style="display:none">Check Out</button>
       </div>
     </div>
   </div>
@@ -492,6 +548,29 @@
             })
             $('#total').text("$ "+res);
         });
+        let validatePayType = ()=>{
+            let data = {
+                'Address' : $("#ad").val(),
+                'PAY_TYPE' : $("#pay_type").val(),
+            }
+            /*let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = ()=>{
+                if((xhr.readyState == 4) && (xhr.status == 200)){
+                    console.log(xhr.responseText);
+                }
+            }
+            xhr.open('POST','../../src/requests.inc.php');
+            xhr.send(data);*/
+
+            $.ajax({
+                url : '../../src/requests.inc.php',
+                method : 'POST',
+                data : data,
+                success : function(res){
+                    console.log(res);
+                }
+            })
+        }
     </script>
 </body>
 
