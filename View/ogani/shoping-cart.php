@@ -429,7 +429,7 @@
         </button>
       </div>
       <div class="modal-body">
-      <div class="bg-info text-center"><p class="text-danger" id='error'></p></div>
+      <div id="error"></div>
         <div class="" style="display:inline" id="step1">
             <form action="">
                 <div class="form-group col-12">
@@ -553,6 +553,7 @@
             let data = {
                 'Address' : $("#ad").val(),
                 'PAY_TYPE' : $("#pay_type").val(),
+                'AMOUNT' : $('#total').text()
             }
             $.ajax({
                 url : '../../src/requests.inc.php',
@@ -560,7 +561,7 @@
                 data : data,
                 success : function(res){
                     console.log(res);
-                    $('#error').text(res);
+                    $('#error').html(res);
                 }
             })
         }
