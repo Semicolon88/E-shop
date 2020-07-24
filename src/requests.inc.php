@@ -1,8 +1,8 @@
 <?php
-    include_once "../Classes/Model/Session.class.php";
-    include_once "../Classes/Model/Database.class.php";
-    include_once "../Classes/Controller/Controller.class.php";
-    include_once "../Classes/Controller/Payment.class.php";
+    //include_once "../Classes/Model/Session.class.php";
+    //include_once "../Classes/Model/Database.class.php";
+    //include_once "../Classes/Controller/Controller.class.php";
+    //include_once "../Classes/Controller/Payment.class.php";
     if(isset($_POST['submit']))
     {
         $obj = new Controller;
@@ -159,8 +159,16 @@
         echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";
     }*/
     if(isset($_POST['cart'])){
-        $data = new Controller;
-        $data->add_cart($_POST['cart_id']);
+        //echo $_POST['cart_id']
+        if($_POST['cart_id'] == 'login_first'){
+            $url = $_SERVER['REQUEST_URI'];
+            if(strpos($url,'View')){
+                header('Location: ../../E-shop/View/Admin/concept-master/Login/login.php');
+            }
+        }else{
+            $data = new Controller;
+            $data->add_cart($_POST['cart']);
+        }
     }
     if(isset($_POST['Address'])){
         $obj = new Controller;

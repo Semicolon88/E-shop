@@ -3,6 +3,7 @@
     include_once "../Classes/Model/Session.class.php";
     include_once "../Classes/Model/Database.class.php";
     include_once "../Classes/Controller/Controller.class.php";
+    include_once "../src/requests.inc.php";
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -391,8 +392,8 @@
                                             <a href="#" class='btn btn-outline-success'><i class="fa fa-heart"></i>&nbsp;Buy Now</a>
                                         </div>
                                         <div class="col-6 text-center">
-                                            <form action="../src/requests.inc.php" method="post">
-                                            <input type="hidden" name="cart_id" value='<?=$data[$increment]['id']?>'>
+                                            <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+                                            <input type="hidden" name="cart_id" value='<?=((isset($_SESSION['user_id']))?$data[$increment]['id']:'login_first')?>'>
                                                 <input type="submit" name='cart' class='btn btn-secondary' value='Add to Cart'>
                                             </form>
                                         </div>
@@ -402,8 +403,12 @@
                 <?php
                             $increment++;
                         endforeach;
-                    endif;    
+                    else:    
                 ?> 
+                       <div class="bg-info"><p class="text-danger">NO DATA</p></div>
+                <?php
+                    endif;
+                ?>       
             </div>
         </div>
     </section>

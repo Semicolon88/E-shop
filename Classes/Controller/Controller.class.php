@@ -276,7 +276,12 @@
                 {
                     Session::start();
                     Session::set('user_id',$result);
-                    header('Location: ../pages/data-tables.php');
+                    //header('Location: '.$url);
+                    if(Session::get('user_id')['permission'] == 1){
+                        header('Location: ../pages/data-tables.php');
+                    }else{
+                        header('Location: ../../../index.php');
+                    }
                 }
             }
         }

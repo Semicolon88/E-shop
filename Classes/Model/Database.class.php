@@ -1,5 +1,5 @@
 <?php
-
+    //include_once "Session.class.php";
     class Database
     {
         private $host = "localhost";

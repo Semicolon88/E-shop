@@ -2,6 +2,8 @@
    include_once "../../Classes/Model/Session.class.php";
    include_once "../../Classes/Model/Database.class.php";
    include_once "../../Classes/Controller/Controller.class.php";
+   include_once "../../Classes/Controller/Payment.class.php";
+   //include_once "../../src/requests.inc.php";
 
    //$user = new Controller;
    /*if(!$user::is_logged_in()){
