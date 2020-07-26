@@ -432,7 +432,7 @@
       </div>
       <div class="modal-body">
       <div id="error"></div>
-        <div class="" style="display:inline" id="step1">
+        <div class="" style="display:none" id="step1">
             <form action="">
                 <div class="form-group col-12">
                     <label for="Address">Shipping Address</label>
@@ -453,8 +453,8 @@
                 </div>
             </form>
         </div>
-        <div class="" style="display:none" id="step1">
-            <form action="">
+        <div class="" style="display:block" id="step1">
+            <!--form action="">
                 <div class="form-group col-12">
                     <label for="name">Card Holder's Name</label>
                     <input type="text" id='name' class="form-control">
@@ -470,21 +470,36 @@
                 <div class="form-group col-12">
                     <label for="month">Expire Month</label><br>
                     <select name="exp-month" class="col-4" id="month">
-                        <?php for($i = 1;$i <= 12;++$i):?>
-                            <option value="<?=$i?>"><?=$i?></option>
-                        <?php endfor;?>
+                        <!--?php for($i = 1;$i <= 12;++$i):?>
+                            <option value="<!--?=$i?>"><!--?=$i?></option>
+                        <!--?php endfor;?>
                     </select>
                 </div><br/><br/>
                 <div class="form-group col-12">
                     <label for="year">Expire Year</label><br>
                     <select name="exp-year" class='col-12' id="year">
-                        <?php $year = date('Y');?>
-                            <?php for($i = 1;$i <= 10;++$i):?>
-                                <option value="<?=$year?>"><?=$year?></option>
-                            <?php $year++;?>
-                        <?php endfor;?>
+                        <!--?php $year = date('Y');?>
+                            <!--?php for($i = 1;$i <= 10;++$i):?>
+                                <option value="<!--?=$year?>"><!--?=$year?></option>
+                            <!--?php $year++;?>
+                        <!--?php endfor;?>
                     </select>
                 </div>
+            </form-->
+            <form action="/charge" method="post" id="payment-form">
+                <div class="form-row">
+                    <label for="card-element">
+                    Credit or debit card
+                    </label>
+                    <div id="card-element">
+                    <!-- A Stripe Element will be inserted here. -->
+                    </div>
+
+                    <!-- Used to display Element errors. -->
+                    <div id="card-errors" role="alert"></div>
+                </div>
+
+                <button>Submit Payment</button>
             </form>
         </div>
       </div>
@@ -507,6 +522,8 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
     <script>
         let totalPrice ;
         let ele;
