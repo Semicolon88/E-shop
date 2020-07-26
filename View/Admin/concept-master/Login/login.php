@@ -42,6 +42,9 @@
 					    if(isset($_SESSION['error_flash'])){
 							echo "<div class='bg-info px-2 m-b-9 col-12'>".Session::get('error_flash')."</div>";
 						} 
+						if(isset($_SESSION['cart_login'])){
+							echo "<div class='bg-info px-2 m-b-9 col-12'>".Session::get('cart_login')."</div>";
+						} 
 					    include_once "../../../../src/requests.inc.php"
 					?>
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">

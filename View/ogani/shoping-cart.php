@@ -445,7 +445,7 @@
                             $card_type = ['Verve','Mastercard','Visa','Paypal','Bank Transfer'];
                             for($i = 0; $i < count($card_type);++$i):
                         ?>
-                                <option value="<?=$card_type[$i]?>"><?=$card_type[$i]?></option>
+                                <option value="<?=(($card_type[$i] == 'Bank Transfer')?"BankTransfer":$card_type[$i])?>"><?=$card_type[$i]?></option>
                         <?php
                             endfor;
                         ?>        

@@ -1,8 +1,8 @@
 <?php
-    //include_once "../Classes/Model/Session.class.php";
-    //include_once "../Classes/Model/Database.class.php";
-    //include_once "../Classes/Controller/Controller.class.php";
-    //include_once "../Classes/Controller/Payment.class.php";
+    include_once "../Classes/Model/Session.class.php";
+    include_once "../Classes/Model/Database.class.php";
+    include_once "../Classes/Controller/Controller.class.php";
+    include_once "../Classes/Controller/Payment.class.php";
     if(isset($_POST['submit']))
     {
         $obj = new Controller;
@@ -162,12 +162,13 @@
         //echo $_POST['cart_id']
         if($_POST['cart_id'] == 'login_first'){
             $url = $_SERVER['REQUEST_URI'];
+            Session::set('cart_login','Login to create your Shopping Cart');
             if(strpos($url,'View')){
                 header('Location: ../../E-shop/View/Admin/concept-master/Login/login.php');
             }
         }else{
             $data = new Controller;
-            $data->add_cart($_POST['cart']);
+            $data->add_cart($_POST['cart_id']);
         }
     }
     if(isset($_POST['Address'])){
