@@ -296,10 +296,25 @@
     
    let getId = (id)=>
     {
-        let ele = $('#'+id);
-        if(ele != ""){
-            console.log(ele.files);
-        }
+        console.log(id);
+        $('#'+id).change(function(){
+            let file = document.querySelector('#'+id).files[0];
+            let formdata = new FormData();
+            formdata.append('file',file);
+            formdata.append('file-index',id.split('-').pop());
+            $.ajax({
+                url : '../../../src/requests.inc.php?edit=<?=$data['id']?>',
+                method : 'POST',
+                data : formdata,
+                cache : false,
+                contentType : false,
+                processData : false,
+                success : function(res){
+                    console.log(res);
+                }
+            })
+        });
+
     }
 </script>
 </body>
