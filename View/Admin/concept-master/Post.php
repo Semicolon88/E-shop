@@ -294,32 +294,13 @@
     /// please, i need you to review this part of my code.
     /// so,i'm trying to send a file with ajax POST method to this url ../../../src/modal.inc.php?edit=
     
-   /* let getId = (id)=>
+   let getId = (id)=>
     {
-        $('#'+id).on('change',function(){
-            editData.push(id);
-            let fileId = id.split('-')[1];
-            let file = document.querySelector('#'+id).files;
-            editFile.push(file);
-            let data = new FormData();
-            let xhr = new XMLHttpRequest();
-            data.append('file[]',file);
-            data.append('id',fileId);
-            //console.log(file);
-            xhr.onreadystatechange = ()=>
-            {
-                if(xhr.readyState == 4 && xhr.status == 200)
-                {
-                    console.log(xhr.responseText);
-                }else
-                {
-                    console.log(xhr.);
-                }
-            }
-            xhr.open('GET','../../../src/modal.inc.php?edit=<?=$edit_id?>');
-            xhr.send(file);
-        })
-    }*/
+        let ele = $('#'+id);
+        if(ele != ""){
+            console.log(ele.files);
+        }
+    }
 </script>
 </body>
 
