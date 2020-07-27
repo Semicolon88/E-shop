@@ -41,7 +41,7 @@
                                             foreach($img as $photo): 
                                         ?>
                                                 <div style="width:150px;height:150px;" class='col-4 col-md-4 col-sm-4'>
-                                                    <img src="<?=$photo?>" alt="img" style="width:100%;height:80%;"/>
+                                                    <img src="<?=$photo?>" alt="img" id="img-<?=$count?>" style="width:100%;height:80%;"/>
                                                     <div class="row">
                                                         <div class="upload-btn-wrapper text-center col-6 my-2" >
                                                             <button class="bttn mx-4"><i class="fas fa-pencil-alt"></i></button>
@@ -226,60 +226,8 @@
             }
         })
     })
-   /*$('#sub').click((e)=>
-    {
-        e.preventDefault();
-        let data = new FormData();
-        let files = document.querySelector('#photo').files;
-        for(let file of files)
-        {
-            data.append('photo[]',file);
-        }
-        let keys = ['product_name','price','list_price','category','brand','portfolio','description','photo'];
-        let values = [$('#product_name').val(),$('#price').val(),$('#list_price').val(),$('#category').val(),$('#brand').val(),$('#portfolio').val(),$('#description').val(),''];
-        for(let key in keys)
-        {
-            data.append(keys[key],values[key]);
-        }
-        let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = ()=>
-        {
-            if((xhr.readyState == 4) && (xhr.status == 200))
-            {
-                for(let ele of keys)
-                {
-                    $('#'+ele).val('');
-                }
-            }
-        }
-        xhr.open('post','../../../src/modal.inc.php');
-        xhr.send(data);
-    })
-    $('#edit').click((e)=>
-    {
-        e.preventDefault();
-        let data = new FormData();
-        let keys = ['product_name','price','list_price','category','brand','portfolio','description'];
-        let values = [$('#product_name').val(),$('#price').val(),$('#list_price').val(),$('#category').val(),$('#brand').val(),$('#portfolio').val(),$('#description').val()];
-        for(let key in keys)
-        {
-            data.append(keys[key],values[key]);
-        }
-        let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = ()=>
-        {
-            if((xhr.readyState == 4) && (xhr.status == 200))
-            {
-                /*for(let ele of keys)
-                {
-                    $('#'+ele).val('');
-                }
-                console.log('sent')
-           }
-        }
-        xhr.open('post','../../../src/modal.inc.php');
-        xhr.send(data);
-    })*/
+
+
     $('#save').click(()=>
     {
         let qty = '';
@@ -290,13 +238,9 @@
         $('#val').val(qty);
     })
 
-    ////////////////////////////////
-    /// please, i need you to review this part of my code.
-    /// so,i'm trying to send a file with ajax POST method to this url ../../../src/modal.inc.php?edit=
     
    let getId = (id)=>
     {
-        console.log(id);
         $('#'+id).change(function(){
             let file = document.querySelector('#'+id).files[0];
             let formdata = new FormData();
@@ -310,6 +254,8 @@
                 contentType : false,
                 processData : false,
                 success : function(res){
+                    let index = id.split('-').pop();
+                    //$('#img-'+index).attr('src',res);
                     console.log(res);
                 }
             })

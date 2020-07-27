@@ -111,6 +111,30 @@
             }
             $this->fileNames .= implode(',',$db_path);
         }
+        public function upload_edited_image()
+       {
+           $name = $this->files['name'];
+           $type = $this->files['type'];
+           $size = $this->files['size'];
+           $format = ['jpg','jpeg','png'];
+           $tmp = $this->files['tmp_name'];
+           $ext = explode('.',$name);
+           $actExt = strtolower(end($ext));
+           $file_name = sha1(microtime()).".".$actExt;
+           $upload_name = '/E-shop/View/Admin/Uploads/'.$file_name;
+           $dir = $_SERVER['DOCUMENT_ROOT']."/E-shop/View/Admin/Uploads/".$file_name;
+           if($size > 101010101)
+           {
+               $this->error[] = "File too large";
+           }
+           if(!in_array($actExt,$format)){
+               $this->error[] = "Image Format not allowed";
+           }
+           if(empty($this->error)){
+               move_uploaded_file($tmp,$dir);
+               return $upload_name;
+           }
+       }
         public function validate()
         {
             $this->add_brand();

@@ -55,8 +55,12 @@
         $data = $edit_data->select_this($edit_id);
         $img = explode(',',$data['photo']);
         if($_FILES['file']['name'] != ""){
-            print_r($_FILES);
-            echo $_POST['file-index'];
+            $edit_index = $_POST['file-index'];
+            $edit_data->setFile($_FILES['file']);
+            $res = $edit_data->upload_edited_image();
+            $img[$edit_index] = $res;
+            print_r($img);
+            //echo $res;
         }
 
         if(isset($_POST['edit']))
@@ -89,11 +93,22 @@
             }
             if(!empty($edit_data->error))
             {
-                //header('Location: ../View/Admin/concept-master/Post.php?edit='.$edit_id);
                 echo $edit_data->display_errors();
             }else
             {
-                $edit_data->setData($fields);
+                $Photo = implode(',',$img);
+                $field = [
+                    'product_name'=>$productName,
+                    'price'=>$price,
+                    'list_price'=>$listPrice,
+                    'category'=>$cat,
+                    'portfolio'=>$port,
+                    'brand'=>$brand,
+                    'description'=>$details,
+                    'sizes'=>$sizes,
+                    'photo'=>$photo
+                ];
+                $edit_data->setData($field);
                 $edit_data->update($edit_id);
             }
         }           
