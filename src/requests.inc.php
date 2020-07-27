@@ -1,8 +1,8 @@
 <?php
-    //include_once "../Classes/Model/Session.class.php";
-    //include_once "../Classes/Model/Database.class.php";
-    //include_once "../Classes/Controller/Controller.class.php";
-    //include_once "../Classes/Controller/Payment.class.php";
+    include_once "../Classes/Model/Session.class.php";
+    include_once "../Classes/Model/Database.class.php";
+    include_once "../Classes/Controller/Controller.class.php";
+    include_once "../Classes/Controller/Payment.class.php";
     if(isset($_POST['submit']))
     {
         $obj = new Controller;
@@ -54,6 +54,10 @@
         $edit_data = new Controller;
         $data = $edit_data->select_this($edit_id);
         $img = explode(',',$data['photo']);
+        if($_FILES['file']['name'] != ""){
+            print_r($_FILES);
+            echo $_POST['file-index'];
+        }
 
         if(isset($_POST['edit']))
         {
