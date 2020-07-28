@@ -62,8 +62,17 @@
             $edit_data->setFile($_FILES['file']);
             $edit_data->update_image($edit_id,$edit_index);
         }
+        if(isset($_POST['del-index'])){
+            $edit_data->delete_image($edit_id,$_POST['del-index']);
+        }
         if(isset($_POST['edit']))
-        {
+        { 
+            if(isset($_FILES['photo']) && !empty($_FILES['photo']['name'])){
+                $edit_data->setFile($_FILES);
+                $edit_data->upload_image();
+                //print_r($_POST);
+                //print_r($_FILES);
+            }
             $productName = $_POST['product_name'];
             $price = $_POST['price'];
             $listPrice = $_POST['list_price'];

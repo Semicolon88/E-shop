@@ -112,6 +112,7 @@
                 }
             }
             $this->fileNames .= implode(',',$db_path);
+            //echo count($this->files['photo']['name']);
         }
         public function update_image($id,$index)
         {
@@ -143,6 +144,18 @@
                $stmt = $this->DBHandler->prepare($sequel);
                $stmt->execute([implode(',',$image),$id]);
                echo $upload_name;
+            }
+        }
+        public function delete_image($id,$index,$url)
+        {
+            $data = $this->select_this($id);
+            $photo = explode(',',$data['photo']);
+            unset($photo[$index]);
+            $sequel = "UPDATE products SET photo = ? WHERE id = ?";
+            $stmt = $this->DBHandler->prepare($sequel);
+            $exec = $stmt->execute([implode(',',$photo),$id]);
+            if($exec){
+                header('Location: '.$url);
             }
         }
         public function validate()
@@ -212,7 +225,9 @@
         public function update($id)
         {
             $this->validate();
-            //$this->data['photo'] = $this->fileNames;
+            if(!empty($this->fileNames)){
+                $this->data['photo'] = $this->fileNames;
+            }
             $st = "";
             foreach ($this->data  as $key => $value) 
             {

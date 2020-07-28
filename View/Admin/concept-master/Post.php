@@ -33,7 +33,7 @@
                     <div class="row mx-3 my-4">
                         <div class="form-group col-md-12 col-lg-6 col-sm-12">
                             <?php
-                                if(!empty($img)):
+                                if(!empty($img[0])):
                                     $count = 0;
                             ?>
                                     <div class="row">
@@ -45,10 +45,10 @@
                                                     <div class="row">
                                                         <div class="upload-btn-wrapper text-center col-6 my-2" >
                                                             <button class="bttn mx-4"><i class="fas fa-pencil-alt"></i></button>
-                                                            <input type="file" name="photo[]" class='edit' id='edit-<?=$count?>' onclick ='getId(this.id);'/>
+                                                            <input type="file" class='edit' id='edit-<?=$count?>' onclick ='getId(this.id);'/>
                                                         </div>
                                                         <div class="upload-btn-wrapper text-center col-6 my-2" >
-                                                            <button class="btn" id='delete<?=$count?>' onclick='del(this.id);return false;'><i class="fas fa-trash-alt"></i></button>
+                                                            <button class="btn" id='delete-<?=$count?>' onclick='del(this.id);return false;'><i class="fas fa-trash-alt"></i></button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -61,7 +61,7 @@
                                 else:    
                             ?>
                                     <label for="photo">Product Image</label>
-                                    <input type="file" name="photo[]" id="photo" class="form-control" multiple>
+                                    <input type="file" name="photo[]" class="form-control" multiple>
                             <?php
                                 endif;
                             ?>
@@ -180,39 +180,6 @@
 <!-- main js-->
 <script src="assets/libs/js/main-js.js"></script>
 <script>
-    let editData = [];
-    let editFile = [];
-    let deleteData = [];
-    /*let del = (id)=>
-    {
-        deleteData.push(id);
-        //alert(deleteData);
-    }
-    /*$('.edit').on('change',()=>
-    {
-        console.log('changed');
-    })*/
-    /*let edt = (id)=>{
-        $('#'+id).on('change',()=>
-        {
-            let xhr = new FormData();
-            let data = document.querySelector('#'+id).files;
-            //xhr.open('post',../../../src/modal.inc.php');
-            //xhr.send(data);
-            xhr.append('photo',data);
-            $.ajax({
-                url : '../../../src/modal.inc.php',
-                method : 'POST',
-                data : xhr,
-                processData : false,
-                cache : false,
-                contentType : false,
-                success : (res)=>{
-                    console.log(res);
-                }
-            })
-        })
-    }*/
     $("#addon-wrapping").click((e)=>
     {
         e.preventDefault();
@@ -242,7 +209,8 @@
     
     let getId = (id)=>
     {
-        $('#'+id).change(function(){
+        $('#'+id).change(()=>
+        {
             let file = document.querySelector('#'+id).files[0];
             let formdata = new FormData();
             formdata.append('file',file);
@@ -254,13 +222,27 @@
                 cache : false,
                 contentType : false,
                 processData : false,
-                success : function(res){
+                success : function(res)
+                {
                     let index = id.split('-').pop();
                     $('#img-'+index).attr('src',res);
                 }
             })
         });
+    }
 
+    let del = (id)=>
+    {
+        let index = id.split('-').pop();
+        $.ajax({
+            url : '../../../src/requests.inc.php?edit=<?=$data['id']?>',
+            method : 'POST',
+            data : {'del-index : index},
+            success : (res)=>
+            {
+                console.log(res);
+            } 
+        })
     }
 </script>
 </body>
