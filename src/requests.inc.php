@@ -3,6 +3,7 @@
     include_once "../Classes/Model/Database.class.php";
     include_once "../Classes/Controller/Controller.class.php";
     include_once "../Classes/Controller/Payment.class.php";
+
     if(isset($_POST['submit']))
     {
         $obj = new Controller;
@@ -54,15 +55,13 @@
         $edit_data = new Controller;
         $data = $edit_data->select_this($edit_id);
         $img = explode(',',$data['photo']);
-        if($_FILES['file']['name'] != ""){
+        $res = "";
+        if(isset($_FILES['file']['name']) && !empty($_FILES['file']['name']))
+        {
             $edit_index = $_POST['file-index'];
             $edit_data->setFile($_FILES['file']);
-            $res = $edit_data->upload_edited_image();
-            $img[$edit_index] = $res;
-            print_r($img);
-            //echo $res;
+            $edit_data->update_image($edit_id,$edit_index);
         }
-
         if(isset($_POST['edit']))
         {
             $productName = $_POST['product_name'];
@@ -73,6 +72,7 @@
             $brand = $_POST['brand'];
             $details = $_POST['details'];
             $sizes = $_POST['sizes'];
+            $photo = explode(',',$_POST['img']);
             $fields = [
                 'product_name'=>$productName,
                 'price'=>$price,
@@ -96,20 +96,11 @@
                 echo $edit_data->display_errors();
             }else
             {
-                $Photo = implode(',',$img);
-                $field = [
-                    'product_name'=>$productName,
-                    'price'=>$price,
-                    'list_price'=>$listPrice,
-                    'category'=>$cat,
-                    'portfolio'=>$port,
-                    'brand'=>$brand,
-                    'description'=>$details,
-                    'sizes'=>$sizes,
-                    'photo'=>$photo
-                ];
-                $edit_data->setData($field);
-                $edit_data->update($edit_id);
+                $edit_data->setData($fields);
+                if(!empty($edit_data->data))
+                {
+                    $edit_data->update($edit_id);
+                }
             }
         }           
     }

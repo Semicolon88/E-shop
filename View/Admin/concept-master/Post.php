@@ -73,7 +73,8 @@
                                     <button class="input-group-text btn" id="addon-wrapping">Add Sizes</button>
                                 </div>
                                 <!--div class="form-g col-md-5"-->
-                                    <input type="blank" id='val' name='sizes' class='form-control mx-4'>
+                                    <input type="text" name='img' value="<?=$data['photo']?>" class='form-control mx-4'>
+                                    <input type="text" id='val' name='sizes' value="<?=$data['sizes']?>" class='form-control mx-4'>
                                 <!--/div-->
                             </div>
                         </div>
@@ -239,7 +240,7 @@
     })
 
     
-   let getId = (id)=>
+    let getId = (id)=>
     {
         $('#'+id).change(function(){
             let file = document.querySelector('#'+id).files[0];
@@ -255,8 +256,7 @@
                 processData : false,
                 success : function(res){
                     let index = id.split('-').pop();
-                    //$('#img-'+index).attr('src',res);
-                    console.log(res);
+                    $('#img-'+index).attr('src',res);
                 }
             })
         });

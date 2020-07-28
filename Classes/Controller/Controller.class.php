@@ -22,7 +22,9 @@
         {
             $this->files = $file;
         }
-
+        public function setFileName($name){
+            $this->fileNames = $name;
+        }
         public function add_brand()
         {
             $brand = $this->data['brand'];
@@ -111,8 +113,8 @@
             }
             $this->fileNames .= implode(',',$db_path);
         }
-        public function upload_edited_image()
-       {
+        public function update_image($id,$index)
+        {
            $name = $this->files['name'];
            $type = $this->files['type'];
            $size = $this->files['size'];
@@ -127,14 +129,22 @@
            {
                $this->error[] = "File too large";
            }
-           if(!in_array($actExt,$format)){
+           if(!in_array($actExt,$format))
+           {
                $this->error[] = "Image Format not allowed";
            }
-           if(empty($this->error)){
+           if(empty($this->error))
+           {
                move_uploaded_file($tmp,$dir);
-               return $upload_name;
-           }
-       }
+               $entry = $this->select_this($id);
+               $image = explode(',',$entry['photo']);
+               $image[$index] = $upload_name;
+               $sequel = "UPDATE products SET photo = ? WHERE id = ?";
+               $stmt = $this->DBHandler->prepare($sequel);
+               $stmt->execute([implode(',',$image),$id]);
+               echo $upload_name;
+            }
+        }
         public function validate()
         {
             $this->add_brand();
@@ -202,6 +212,7 @@
         public function update($id)
         {
             $this->validate();
+            //$this->data['photo'] = $this->fileNames;
             $st = "";
             foreach ($this->data  as $key => $value) 
             {
