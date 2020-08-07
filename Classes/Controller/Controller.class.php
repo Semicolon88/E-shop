@@ -8,6 +8,7 @@
 
     class Controller extends Database implements InsertFace
     {
+        private $table = "";
         public $data;
         public $files;
         public $fileNames = "";
@@ -112,7 +113,6 @@
                 }
             }
             $this->fileNames .= implode(',',$db_path);
-            //echo count($this->files['photo']['name']);
         }
         public function update_image($id,$index)
         {

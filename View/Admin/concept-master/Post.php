@@ -1,8 +1,9 @@
 <?php
-    include_once "../../../Classes/Model/Session.class.php";
-    include_once "../../../Classes/Model/Database.class.php";
-    include_once "../../../Classes/Controller/Controller.class.php"; 
-   
+    //include_once "../../../Classes/Model/Session.class.php";
+    //include_once "../../../Classes/Model/Database.class.php";
+    //include_once "../../../Classes/Controller/Controller.class.php"; 
+    include "../../../src/Autoload.inc.php";
+    
     $user = new Controller;
     if(!$user::is_logged_in()){
         $user::login_error_redirect("Login/login.php");

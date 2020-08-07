@@ -1,9 +1,9 @@
 <?php
-    include_once "../Classes/Model/Session.class.php";
-    include_once "../Classes/Model/Database.class.php";
-    include_once "../Classes/Controller/Controller.class.php";
-    include_once "../Classes/Controller/Payment.class.php";
-
+    //include_once "../Classes/Model/Session.class.php";
+    //include_once "../Classes/Model/Database.class.php";
+    //include_once "../Classes/Controller/Controller.class.php";
+    //include_once "../Classes/Controller/Payment.class.php";
+    //include_once "Autoload.inc.php";
     if(isset($_POST['submit']))
     {
         $obj = new Controller;

@@ -3,6 +3,8 @@
     include_once "../Classes/Model/Session.class.php";
     include_once "../Classes/Model/Database.class.php";
     include_once "../Classes/Controller/Controller.class.php";
+
+    //include_once "../src/Autoload.inc.php";
     include_once "../src/requests.inc.php";
 ?>
 <!DOCTYPE html>
