@@ -6,6 +6,11 @@
 
     //include_once "../src/Autoload.inc.php";
     include_once "../src/requests.inc.php";
+    $dbh = new Database;
+    $db = $dbh->connect();
+    $ctrl = new Controller($db);
+    //$ctrl->data['brand'] = 'Fila';
+    //$ctrl->add_brand();*/
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -79,8 +84,8 @@
                 </ul>
             </div>
             <?php
-                $user = new Controller;
-                if($user::is_logged_in()):
+                //$user = new Controller;
+                if($ctrl::is_logged_in()):
             ?>
                     <div class="header__top__right__language">
                         <div>
@@ -171,8 +176,8 @@
                                 </ul>
                             </div>
                             <?php
-                                $user = new Controller;
-                                if($user::is_logged_in()):
+                                //$user = new Controller;
+                                if($ctrl::is_logged_in()):
                             ?>
                                     <div class="header__top__right__language">
                                         <!-- href="Admin/concept-master/Login/login.php"--><div><i class="fa fa-user"></i>&nbsp;<?=Session::get('user_id')['last_name']?></div>
@@ -363,8 +368,10 @@
             </div>
             <div class="row featured__filter">
                 <?php
-                    $obj = new Controller;
-                    $data = $obj->selectAll();
+                    //$d_b = new Database;
+                    //$db = $d_b->connect();
+                    //$obj = new Controller($db);
+                    $data = $ctrl->selectAll();
                     //print_r($data['0']);
                     $increment = 0;
                     if(!empty($data)):

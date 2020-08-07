@@ -1,7 +1,37 @@
 <?php
     include_once "../../../../Classes/Model/Session.class.php";
     include_once "../../../../Classes/Model/Database.class.php";
-    include_once "../../../../Classes/Controller/Controller.class.php";
+	include_once "../../../../Classes/Controller/Controller.class.php";
+	$dbh = new Database;
+	$db = $dbh->connect();
+	$ctrl = new Controller($db);
+	if(isset($_POST['signup']))
+    {
+        $firstName = $_POST['first_name'];
+        $lastName = $_POST['last_name'];
+        $email = $_POST['email'];
+        $pword = $_POST['pword'];
+        $rPword = $_POST['r-pword'];
+        //$obj = new Controller;
+        if($pword != $rPword)
+        {
+            $ctrl->error[] = "Password does not match";
+        }
+        $fields = [
+            'first_name'=>$firstName,
+            'last_name'=>$lastName,
+            'email'=>$email,
+            'pword'=>password_hash($pword,PASSWORD_DEFAULT)
+        ];
+        if(!empty($ctrl->error))
+        {
+            echo $ctrl->display_errors();
+        }else
+        {
+            $ctrl->setData($fields);
+            $ctrl->addUser();
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +69,7 @@
 					<span class="login100-form-title">
 						Member Sign up
 					</span>
-                    <?php include_once "../../../../src/requests.inc.php"?>
+                    <!--?php include_once "../../../../src/requests.inc.php"?-->
 					<div class="wrap-input100 validate-input m-t-9" data-validate = "First Name is required">
 						<input class="input100" type="text" name="first_name" placeholder="First Name">
 						<span class="focus-input100"></span>

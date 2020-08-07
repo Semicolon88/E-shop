@@ -9,8 +9,9 @@
 
         protected $DBHandler;
 
-        public function __construct()
+        public function connect()
         {
+            $this->DBHandler = null;
             $dsn = "mysql:host=".$this->host.";dbname=".$this->db;
             try{
                 $this->DBHandler = new PDO($dsn,$this->user,$this->pwd);

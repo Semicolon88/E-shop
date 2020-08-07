@@ -1,14 +1,123 @@
 <?php
-    //include_once "../../../Classes/Model/Session.class.php";
-    //include_once "../../../Classes/Model/Database.class.php";
-    //include_once "../../../Classes/Controller/Controller.class.php"; 
-    include "../../../src/Autoload.inc.php";
+    include_once "../../../Classes/Model/Session.class.php";
+    include_once "../../../Classes/Model/Database.class.php";
+    include_once "../../../Classes/Controller/Controller.class.php"; 
+    //include "../../../src/Autoload.inc.php";
     
     $user = new Controller;
     if(!$user::is_logged_in()){
         $user::login_error_redirect("Login/login.php");
     }
-    include_once "../../../src/requests.inc.php";
+    //include_once "../../../src/requests.inc.php";
+    if(isset($_POST['submit']))
+    {
+        $obj = new Controller;
+        $productName = $_POST['product_name'];
+        $price = $_POST['price'];
+        $listPrice = $_POST['list_price'];
+        $cat = $_POST['category'];
+        $port = $_POST['portfolio'];
+        $brand = $_POST['brand'];
+        $details = $_POST['details'];
+        $sizes = $_POST['sizes'];
+
+
+        $fields = [
+            'product_name'=>$productName,
+            'price'=>$price,
+            'list_price'=>$listPrice,
+            'category'=>$cat,
+            'portfolio'=>$port,
+            'brand'=>$brand,
+            'description'=>$details,
+            'sizes'=>$sizes
+        ];
+        foreach ($fields as $key => $value) 
+        {
+            if(isset($_POST[$key]) && empty($_POST[$key]))
+            {
+                $obj->error[] = "All feilds are required";
+            break;
+            }
+        }
+        if(empty($_FILES['photo']['name'][0])){
+            $obj->error[] = "upload image";
+        }else{
+            $obj->setFile($_FILES);
+            $obj->upload_image();
+        }
+        if(!empty($obj->error))
+        {
+            echo $obj->display_errors();
+        }else{
+            $obj->setData($fields);
+            $obj->add();
+        }
+    }
+    if(isset($_GET['edit']))
+    {
+        $edit_id = $_GET['edit'];
+        $edit_data = new Controller;
+        $data = $edit_data->select_this($edit_id);
+        $img = explode(',',$data['photo']);
+        $res = "";
+        if(isset($_FILES['file']['name']) && !empty($_FILES['file']['name']))
+        {
+            $edit_index = $_POST['file-index'];
+            $edit_data->setFile($_FILES['file']);
+            $edit_data->update_image($edit_id,$edit_index);
+        }
+        if(isset($_POST['del-index'])){
+            $edit_data->delete_image($edit_id,$_POST['del-index']);
+        }
+        if(isset($_POST['edit']))
+        { 
+            if(isset($_FILES['photo']) && !empty($_FILES['photo']['name'])){
+                $edit_data->setFile($_FILES);
+                $edit_data->upload_image();
+                //print_r($_POST);
+                //print_r($_FILES);
+            }
+            $productName = $_POST['product_name'];
+            $price = $_POST['price'];
+            $listPrice = $_POST['list_price'];
+            $cat = $_POST['category'];
+            $port = $_POST['portfolio'];
+            $brand = $_POST['brand'];
+            $details = $_POST['details'];
+            $sizes = $_POST['sizes'];
+            $photo = explode(',',$_POST['img']);
+            $fields = [
+                'product_name'=>$productName,
+                'price'=>$price,
+                'list_price'=>$listPrice,
+                'category'=>$cat,
+                'portfolio'=>$port,
+                'brand'=>$brand,
+                'description'=>$details,
+                'sizes'=>$sizes
+            ];
+            foreach ($fields as $key => $value) 
+            {
+                if(isset($_POST[$key]) && empty($_POST[$key]))
+                {
+                    $edit_data->error[] = "All feilds are required";
+                break;
+                }
+            }
+            if(!empty($edit_data->error))
+            {
+                echo $edit_data->display_errors();
+            }else
+            {
+                $edit_data->setData($fields);
+                if(!empty($edit_data->data))
+                {
+                    $edit_data->update($edit_id);
+                }
+            }
+        }           
+    }
     include_once "../../../src/header.inc.php";
 ?>
 <div class="row">
@@ -217,7 +326,7 @@
             formdata.append('file',file);
             formdata.append('file-index',id.split('-').pop());
             $.ajax({
-                url : '../../../src/requests.inc.php?edit=<?=$data['id']?>',
+                url : '<?=$_SERVER['PHP_SELF']?>?edit=<?=$data['id']?>',
                 method : 'POST',
                 data : formdata,
                 cache : false,

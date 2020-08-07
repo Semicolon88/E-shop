@@ -1,4 +1,5 @@
 <?php
+    //include_once "../Model/config.php";
     interface InsertFace
     {
         public function add();
@@ -6,14 +7,22 @@
         public function validate(); 
     }
 
-    class Controller extends Database implements InsertFace
+    class Controller implements InsertFace
     {
-        private $table = "";
+        private $productTable = PRODUCT_TABLE;
+        private $categoryTable = CATEGORY_TABLE;
+        private $brandTable = BRAND_TABLE;
+        private $connection;
         public $data;
         public $files;
         public $fileNames = "";
         public $error = [];
         public $success = [];
+
+        public function __construct($db)
+        {
+            $this->connection = $db;
+        }
 
         public function setData($data)
         {
@@ -29,17 +38,28 @@
         public function add_brand()
         {
             $brand = $this->data['brand'];
-            $select_brand = "SELECT * FROM brands WHERE brand='$brand'";
-            $prep_brand_query = $this->DBHandler->query($select_brand);
+            $select_brand = "SELECT 
+                            * 
+                        FROM 
+                            ".$this->brandTable." 
+                        WHERE 
+                            brand='$brand'";
+                            
+            $prep_brand_query = $this->connection->query($select_brand);
             $brand_prop = $prep_brand_query->fetch();
             if($prep_brand_query->rowCount() == 0)
             {
                 $sql = "INSERT INTO brands (brand) VALUE (:brand)";
-                $stmt = $this->DBHandler->prepare($sql);
+                $stmt = $this->connection->prepare($sql);
                 $stmt->bindValue(':brand',$this->data['brand']);
                 $exec = $stmt->execute();
-                $select_brand = "SELECT * FROM brands WHERE brand='$brand'";
-                $prep_brand_query = $this->DBHandler->query($select_brand);
+                $select_brand = "SELECT
+                                * 
+                            FROM 
+                                brands 
+                            WHERE 
+                                brand='$brand'";
+                $prep_brand_query = $this->connection->query($select_brand);
                 $brand_prop = $prep_brand_query->fetch();
             }
             $this->data['brand'] = $brand_prop['id'];
@@ -47,36 +67,72 @@
 
         public function add_category()
         {
-            $query_cat = "SELECT * FROM categories WHERE category = :category AND parent = 0";
-            $prep_cat_query = $this->DBHandler->prepare($query_cat);
+            $query_cat = "SELECT 
+                        * 
+                    FROM "
+                        .$this->categoryTable." 
+                    WHERE 
+                        category = :category 
+                    AND 
+                        parent = 0";
+            $prep_cat_query = $this->connection->prepare($query_cat);
             $prep_cat_query->bindValue(':category',$this->data['category']);
             $prep_cat_query->execute();
             $parent = $prep_cat_query->fetch();
             if($prep_cat_query->rowCount() == 0)
             {
-                $sql = "INSERT INTO categories (category) VALUE (:category)";
-                $prep_cat_query = $this->DBHandler->prepare($sql);
+                $sql = "INSERT INTO "
+                        .$this->categoryTable."
+                        (category) 
+                    VALUE
+                        (:category)";
+                $prep_cat_query = $this->connection->prepare($sql);
                 $prep_cat_query->bindValue(':category',$this->data['category']);
                 $exec = $prep_cat_query->execute();
-                $query_cat = "SELECT * FROM categories WHERE category = :category AND parent = 0";
-                $prep_cat_query = $this->DBHandler->prepare($query_cat);
+                $query_cat = "SELECT
+                            * 
+                        FROM "
+                            .$this->categoryTable."
+                        WHERE 
+                            category = :category 
+                        AND 
+                            parent = 0";
+                $prep_cat_query = $this->connection->prepare($query_cat);
                 $prep_cat_query->bindValue(':category',$this->data['category']);
                 $prep_cat_query->execute();
                 $parent = $prep_cat_query->fetch();
             }
             $this->data['category'] = $parent['id'];
             //////////Insert portfolio
-            $query_child = "SELECT * FROM categories WHERE category = ? AND parent = ?";
-            $prep_child_query = $this->DBHandler->prepare($query_child);
+            $query_child = "SELECT 
+                            * 
+                        FROM "
+                            .$this->categoryTable."
+                        WHERE 
+                            category = ? 
+                        AND 
+                            parent = ? ";
+            $prep_child_query = $this->connection->prepare($query_child);
             $prep_child_query->execute([$this->data['portfolio'],$parent['id']]);
             $child = $prep_child_query->fetch();
             if($prep_child_query->rowCount() == 0)
             {
-                $sql = "INSERT INTO categories (category,parent) VALUES (?,?)";
-                $stmt = $this->DBHandler->prepare($sql);
+                $sql = "INSERT INTO "
+                        .$this->categoryTable."
+                        (category,parent) 
+                    VALUES 
+                        (?,?)";
+                $stmt = $this->connection->prepare($sql);
                 $exec = $stmt->execute([$this->data['portfolio'],$parent['id']]);
-                $query_cat = "SELECT * FROM categories WHERE category = ? AND parent = ?";
-                $prep_child_query = $this->DBHandler->prepare($query_cat);
+                $query_cat = "SELECT 
+                            * 
+                        FROM "
+                            .$this->categoryTable." 
+                        WHERE 
+                            category = ? 
+                        AND 
+                            parent = ?";
+                $prep_child_query = $this->connection->prepare($query_cat);
                 $prep_child_query->execute([$this->data['portfolio'],$parent['id']]);
                 $child = $prep_child_query->fetch();
             }
@@ -140,8 +196,13 @@
                $entry = $this->select_this($id);
                $image = explode(',',$entry['photo']);
                $image[$index] = $upload_name;
-               $sequel = "UPDATE products SET photo = ? WHERE id = ?";
-               $stmt = $this->DBHandler->prepare($sequel);
+               $sequel = "UPDATE "
+                        .$this->productTable."
+                    SET 
+                        photo = ? 
+                    WHERE 
+                        id = ?";
+               $stmt = $this->connection->prepare($sequel);
                $stmt->execute([implode(',',$image),$id]);
                echo $upload_name;
             }
@@ -151,8 +212,13 @@
             $data = $this->select_this($id);
             $photo = explode(',',$data['photo']);
             unset($photo[$index]);
-            $sequel = "UPDATE products SET photo = ? WHERE id = ?";
-            $stmt = $this->DBHandler->prepare($sequel);
+            $sequel = "UPDATE "
+                    .$this->productTable." 
+                SET 
+                    photo = ? 
+                WHERE 
+                    id = ?";
+            $stmt = $this->connection->prepare($sequel);
             $exec = $stmt->execute([implode(',',$photo),$id]);
             if($exec){
                 header('Location: '.$url);
@@ -184,7 +250,7 @@
         public function selectAll()
         {
             $select_query = "SELECT * FROM products WHERE deleted=0";
-            $stmt = $this->DBHandler->query($select_query);
+            $stmt = $this->connection->query($select_query);
             if($stmt->rowCount() > 0)
             {
                 while($row = $stmt->fetch())
@@ -273,8 +339,13 @@
         {
             $keys = implode(',',array_keys($this->data));
             $values = implode(', :',array_keys($this->data));
-            $sequel = "SELECT * FROM users WHERE email = ?";
-            $stmt = $this->DBHandler->prepare($sequel);
+            $sequel = "SELECT 
+                    * 
+                FROM 
+                    users 
+                WHERE 
+                    email = ?";
+            $stmt = $this->connection->prepare($sequel);
             $stmt->execute([$this->data['email']]);
             if($stmt->rowCount() > 0)
             {
@@ -286,8 +357,11 @@
                 echo $this->display_errors();
             }else
             {
-                $sequel = "INSERT INTO users ($keys) VALUES (:".$values.")";
-                $stmt = $this->DBHandler->prepare($sequel);
+                $sequel = "INSERT INTO 
+                        users ($keys) 
+                    VALUES 
+                        (:".$values.")";
+                $stmt = $this->connection->prepare($sequel);
                 foreach ($this->data as $key => $value)
                 {
                     # code...

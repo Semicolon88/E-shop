@@ -3,5 +3,6 @@
     define('USER','root');
     define('KEY','');
     define('DB','E-shop');
+    define('BRAND_TABLE','brands');
     define('CATEGORY_TABLE','categories');
     define('PRODUCT_TABLE','products');
