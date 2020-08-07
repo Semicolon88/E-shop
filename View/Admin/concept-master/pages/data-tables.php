@@ -3,9 +3,12 @@
     include_once "../../../../Classes/Model/Database.class.php";
     include_once "../../../../Classes/Controller/Controller.class.php";
     //use Classes\Controller\Controller as Controller;
-    $user = new Controller;
-    if(!$user::is_logged_in())
-        $user::login_error_redirect("../Login/login.php"); 
+
+    $dbh = new Database;
+    $db = $dbh->connect();
+    $ctrl = new Controller($db);
+    if(!$ctrl::is_logged_in())
+        $ctrl::login_error_redirect("../Login/login.php"); 
     include_once "../../../../src/test.php";
 ?>
 <div class="row">
@@ -29,8 +32,7 @@
                         </thead>
                         <tbody>
                             <?php 
-                                $data = new Controller;
-                                $data = $data->selectAll();
+                                $data = $ctrl->selectAll();
                                 if(!empty($data)):
                                     foreach($data as $row):
                             ?>

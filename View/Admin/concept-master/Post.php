@@ -3,15 +3,15 @@
     include_once "../../../Classes/Model/Database.class.php";
     include_once "../../../Classes/Controller/Controller.class.php"; 
     //include "../../../src/Autoload.inc.php";
-    
-    $user = new Controller;
-    if(!$user::is_logged_in()){
-        $user::login_error_redirect("Login/login.php");
+    $dbh = new Database;
+    $db = $dbh->connect();
+    $ctrl = new Controller($db);
+    if(!$ctrl::is_logged_in()){
+        $ctrl::login_error_redirect("Login/login.php");
     }
     //include_once "../../../src/requests.inc.php";
     if(isset($_POST['submit']))
     {
-        $obj = new Controller;
         $productName = $_POST['product_name'];
         $price = $_POST['price'];
         $listPrice = $_POST['list_price'];
@@ -36,47 +36,35 @@
         {
             if(isset($_POST[$key]) && empty($_POST[$key]))
             {
-                $obj->error[] = "All feilds are required";
+                $ctrl->error[] = "All feilds are required";
             break;
             }
         }
         if(empty($_FILES['photo']['name'][0])){
-            $obj->error[] = "upload image";
+            $ctrl->error[] = "upload image";
         }else{
-            $obj->setFile($_FILES);
-            $obj->upload_image();
+            $ctrl->setFile($_FILES);
+            $ctrl->upload_image();
         }
-        if(!empty($obj->error))
+        if(!empty($ctrl->error))
         {
-            echo $obj->display_errors();
+            echo $ctrl->display_errors();
         }else{
-            $obj->setData($fields);
-            $obj->add();
+            $ctrl->setData($fields);
+            $ctrl->add();
         }
     }
     if(isset($_GET['edit']))
     {
         $edit_id = $_GET['edit'];
-        $edit_data = new Controller;
-        $data = $edit_data->select_this($edit_id);
+        //$edit_data = new Controller;
+        $data = $ctrl->select_this($edit_id);
         $img = explode(',',$data['photo']);
-        $res = "";
-        if(isset($_FILES['file']['name']) && !empty($_FILES['file']['name']))
-        {
-            $edit_index = $_POST['file-index'];
-            $edit_data->setFile($_FILES['file']);
-            $edit_data->update_image($edit_id,$edit_index);
-        }
-        if(isset($_POST['del-index'])){
-            $edit_data->delete_image($edit_id,$_POST['del-index']);
-        }
         if(isset($_POST['edit']))
         { 
             if(isset($_FILES['photo']) && !empty($_FILES['photo']['name'])){
-                $edit_data->setFile($_FILES);
-                $edit_data->upload_image();
-                //print_r($_POST);
-                //print_r($_FILES);
+                $ctrl->setFile($_FILES);
+                $ctrl->upload_image();
             }
             $productName = $_POST['product_name'];
             $price = $_POST['price'];
@@ -101,19 +89,19 @@
             {
                 if(isset($_POST[$key]) && empty($_POST[$key]))
                 {
-                    $edit_data->error[] = "All feilds are required";
+                    $ctrl->error[] = "All feilds are required";
                 break;
                 }
             }
-            if(!empty($edit_data->error))
+            if(!empty($ctrl->error))
             {
-                echo $edit_data->display_errors();
+                echo $ctrl->display_errors();
             }else
             {
-                $edit_data->setData($fields);
-                if(!empty($edit_data->data))
+                $ctrl->setData($fields);
+                if(!empty($ctrl->data))
                 {
-                    $edit_data->update($edit_id);
+                    $ctrl->update($edit_id);
                 }
             }
         }           
@@ -150,12 +138,12 @@
                                         <?php
                                             foreach($img as $photo): 
                                         ?>
-                                                <div style="width:150px;height:150px;" class='col-4 col-md-4 col-sm-4'>
+                                                <div style="width:150px;height:150px;" class='col-4 col-md-4 col-sm-4' id="div<?=$count?>">
                                                     <img src="<?=$photo?>" alt="img" id="img-<?=$count?>" style="width:100%;height:80%;"/>
                                                     <div class="row">
                                                         <div class="upload-btn-wrapper text-center col-6 my-2" >
                                                             <button class="bttn mx-4"><i class="fas fa-pencil-alt"></i></button>
-                                                            <input type="file" class='edit' id='edit-<?=$count?>' onclick ='getId(this.id);'/>
+                                                            <input type="file" class='edit' id='edit-<?=$count?>' onclick ='get(this.id);'/>
                                                         </div>
                                                         <div class="upload-btn-wrapper text-center col-6 my-2" >
                                                             <button class="btn" id='delete-<?=$count?>' onclick='del(this.id);return false;'><i class="fas fa-trash-alt"></i></button>
@@ -183,7 +171,7 @@
                                     <button class="input-group-text btn" id="addon-wrapping">Add Sizes</button>
                                 </div>
                                 <!--div class="form-g col-md-5"-->
-                                    <input type="text" name='img' value="<?=$data['photo']?>" class='form-control mx-4'>
+                                    <input type="hidden" name='img' value="<?=$data['photo']?>" class='form-control mx-4'>
                                     <input type="text" id='val' name='sizes' value="<?=$data['sizes']?>" class='form-control mx-4'>
                                 <!--/div-->
                             </div>
@@ -317,16 +305,17 @@
     })
 
     
-    let getId = (id)=>
+    let get = (id)=>
     {
         $('#'+id).change(()=>
         {
             let file = document.querySelector('#'+id).files[0];
             let formdata = new FormData();
             formdata.append('file',file);
+            formdata.append('pro_id',<?=$edit_id?>)
             formdata.append('file-index',id.split('-').pop());
             $.ajax({
-                url : '<?=$_SERVER['PHP_SELF']?>?edit=<?=$data['id']?>',
+                url : '../../../src/requests.inc.php',
                 method : 'POST',
                 data : formdata,
                 cache : false,
@@ -345,14 +334,17 @@
     {
         let index = id.split('-').pop();
         $.ajax({
-            url : '../../../src/requests.inc.php?edit=<?=$data['id']?>',
+            url : '../../../src/requests.inc.php',
             method : 'POST',
-            data : {'del-index : index},
+            data : {'del-index' : index,'edit_id': <?=$edit_id?>},
             success : (res)=>
             {
-                console.log(res);
-            } 
+                //if(res == 'removed'){
+                    $('#div'+index).hide();
+                //}
+            }
         })
+        //$('#div'+index).hide();
     }
 </script>
 </body>

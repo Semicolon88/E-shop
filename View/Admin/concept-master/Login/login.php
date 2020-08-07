@@ -1,7 +1,22 @@
 <?php
     include_once "../../../../Classes/Model/Session.class.php";
     include_once "../../../../Classes/Model/Database.class.php";
-    include_once "../../../../Classes/Controller/Controller.class.php";
+	include_once "../../../../Classes/Controller/Controller.class.php";
+	
+	$dbh = new Database;
+	$db = $dbh->connect();
+	$ctrl = new Controller($db);
+	if(isset($_POST['login']))
+    {
+        $email = $_POST['email'];
+        $pword = $_POST['pword'];
+        $ctrl->setData([
+			'email'=>$email,
+			'pword'=>$pword
+		]);
+        $ctrl->login();
+
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +60,7 @@
 						if(isset($_SESSION['cart_login'])){
 							echo "<div class='bg-info px-2 m-b-9 col-12'>".Session::get('cart_login')."</div>";
 						} 
-					    include_once "../../../../src/requests.inc.php"
+					    //include_once "../../../../src/requests.inc.php"
 					?>
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input100" type="text" name="email" placeholder="Email">

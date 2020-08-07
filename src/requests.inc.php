@@ -1,68 +1,31 @@
 <?php
-    //include_once "../Classes/Model/Session.class.php";
-    //include_once "../Classes/Model/Database.class.php";
-    //include_once "../Classes/Controller/Controller.class.php";
-    //include_once "../Classes/Controller/Payment.class.php";
+    include_once "../Classes/Model/Session.class.php";
+    include_once "../Classes/Model/Database.class.php";
+    include_once "../Classes/Controller/Controller.class.php";
+    include_once "../Classes/Controller/Payment.class.php";
     //include_once "Autoload.inc.php";
-    if(isset($_POST['submit']))
-    {
-        $obj = new Controller;
-        $productName = $_POST['product_name'];
-        $price = $_POST['price'];
-        $listPrice = $_POST['list_price'];
-        $cat = $_POST['category'];
-        $port = $_POST['portfolio'];
-        $brand = $_POST['brand'];
-        $details = $_POST['details'];
-        $sizes = $_POST['sizes'];
-
-
-        $fields = [
-            'product_name'=>$productName,
-            'price'=>$price,
-            'list_price'=>$listPrice,
-            'category'=>$cat,
-            'portfolio'=>$port,
-            'brand'=>$brand,
-            'description'=>$details,
-            'sizes'=>$sizes
-        ];
-        foreach ($fields as $key => $value) 
-        {
-            if(isset($_POST[$key]) && empty($_POST[$key]))
+        if(isset($_POST['pro_id']) && !empty($_POST['pro_id'])){
+            if(isset($_FILES['file']['name']) && !empty($_FILES['file']['name']))
             {
-                $obj->error[] = "All feilds are required";
-            break;
+                $dbh = new Database;
+                $db = $dbh->connect();
+
+                $ctrl = new Controller($db);
+                $edit_index = $_POST['file-index'];
+                $pro_id = $_POST['pro_id'];
+                $ctrl->setFile($_FILES['file']);
+                $ctrl->update_image($pro_id,$edit_index);
             }
         }
-        if(empty($_FILES['photo']['name'][0])){
-            $obj->error[] = "upload image";
-        }else{
-            $obj->setFile($_FILES);
-            $obj->upload_image();
-        }
-        if(!empty($obj->error))
-        {
-            echo $obj->display_errors();
-        }else{
-            $obj->setData($fields);
-            $obj->add();
-        }
-    }
-    if(isset($_GET['edit']))
-    {
-        $edit_id = $_GET['edit'];
-        $edit_data = new Controller;
-        $data = $edit_data->select_this($edit_id);
-        $img = explode(',',$data['photo']);
-        $res = "";
-        if(isset($_FILES['file']['name']) && !empty($_FILES['file']['name']))
-        {
-            $edit_index = $_POST['file-index'];
-            $edit_data->setFile($_FILES['file']);
-            $edit_data->update_image($edit_id,$edit_index);
-        }
         if(isset($_POST['del-index'])){
+            $dbh = new Database;
+            $db = $dbh->connect();
+            $ctrl = new Controller($db);
+            $edit_id = $_POST['edit_id'];
+            $ctrl->delete_image($edit_id,$_POST['del-index']);
+            //echo "working";
+        }
+        /*if(isset($_POST['del-index'])){
             $edit_data->delete_image($edit_id,$_POST['del-index']);
         }
         if(isset($_POST['edit']))
@@ -112,7 +75,7 @@
                 }
             }
         }           
-    }
+    }*/
     if(isset($_GET['delete']))
     {
         $delete_id = $_GET['delete'];

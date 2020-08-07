@@ -207,7 +207,7 @@
                echo $upload_name;
             }
         }
-        public function delete_image($id,$index,$url)
+        public function delete_image($id,$index)
         {
             $data = $this->select_this($id);
             $photo = explode(',',$data['photo']);
@@ -215,13 +215,17 @@
             $sequel = "UPDATE "
                     .$this->productTable." 
                 SET 
-                    photo = ? 
+                    photo =:photo 
                 WHERE 
-                    id = ?";
+                    id =:id";
             $stmt = $this->connection->prepare($sequel);
-            $exec = $stmt->execute([implode(',',$photo),$id]);
+            $stmt->bindValue(':photo',implode(',',$photo));
+            $stmt->bindValue(':id',$id);
+            $exec = $stmt->execute();
             if($exec){
-                header('Location: '.$url);
+                echo "removed";
+            }else{
+                echo "something went wrong";
             }
         }
         public function validate()
@@ -262,27 +266,51 @@
         }
         public function select_this($id)
         {
-            $query = "SELECT * FROM products WHERE id=:id";
-            $prep_stmt = $this->DBHandler->prepare($query);
+            $query = "SELECT 
+                    * 
+                FROM 
+                    products 
+                WHERE 
+                    id=:id";
+            $prep_stmt = $this->connection->prepare($query);
             $prep_stmt->bindValue(':id',$id);
             $prep_stmt->execute();
             $result = $prep_stmt->fetch();
-            $get_cat = "SELECT * FROM categories WHERE id = ? AND parent = 0";
-            $prep = $this->DBHandler->prepare($get_cat);
+            $get_cat = "SELECT 
+                        * 
+                    FROM 
+                        categories 
+                    WHERE 
+                        id = ? 
+                    AND 
+                        parent = 0";
+            $prep = $this->connection->prepare($get_cat);
             $prep->execute([$result['category']]);
             $cat_res = $prep->fetch();
             $result['category'] = $cat_res['category'];
             ////////
-            $get_port = "SELECT * FROM categories WHERE id =:id AND parent =:parent ";
-            $prep_port = $this->DBHandler->prepare($get_port);
+            $get_port = "SELECT 
+                        * 
+                    FROM 
+                        categories 
+                    WHERE 
+                        id =:id 
+                    AND 
+                        parent =:parent ";
+            $prep_port = $this->connection->prepare($get_port);
             $prep_port->bindValue(':id',$result['portfolio']);
             $prep_port->bindValue(':parent',$cat_res['id']);
             $prep_port->execute();
             $port_res = $prep_port->fetch();
             $result['portfolio'] = $port_res['category'];
             //////////
-            $get_brand = "SELECT * FROM brands WHERE id =?";
-            $prep_brand = $this->DBHandler->prepare($get_brand);
+            $get_brand = "SELECT 
+                        * 
+                    FROM 
+                        brands 
+                    WHERE 
+                        id =?";
+            $prep_brand = $this->connection->prepare($get_brand);
             $prep_brand->execute([$result['brand']]);
             $brand_res = $prep_brand->fetch();
             $result['brand'] = $brand_res['brand'];
@@ -299,10 +327,10 @@
             {
                 $st .= "$key = :".$key.", ";
             }
-            $sql = "";
-            $sql.= "UPDATE products SET ".rtrim($st,', ');
-            $sql.= " WHERE id = ".$id;
-            $stmt = $this->DBHandler->prepare($sql);
+            $sql = "UPDATE products SET ".rtrim($st,', ')." 
+                WHERE 
+                    id = ".$id;
+            $stmt = $this->connection->prepare($sql);
             foreach ($this->data as $key => $value) 
             {
                 # code...
@@ -377,7 +405,7 @@
         public function login()
         {
             $sequel = "SELECT * FROM users WHERE email = ?";
-            $stmt = $this->DBHandler->prepare($sequel);
+            $stmt = $this->connection->prepare($sequel);
             $stmt->execute([$this->data['email']]);
             $result = $stmt->fetch();
             if($stmt->rowCount() == 0)
