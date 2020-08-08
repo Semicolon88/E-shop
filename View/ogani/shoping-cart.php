@@ -270,8 +270,10 @@
                             </thead>
                             <tbody>
                                 <?php
-                                   $cart = new Controller;
-                                   $cart_data = $cart->cart();
+                                   $dbh = new Database;
+                                   $db = $dbh->connect();
+                                   $ctrl = new Controller($db);
+                                   $cart_data = $ctrl->cart();
                                    $indexer = 0;
                                    $total = 0;
                                    if(!empty($cart_data)):

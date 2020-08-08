@@ -3,14 +3,14 @@
     include_once "../Classes/Model/Session.class.php";
     include_once "../Classes/Model/Database.class.php";
     include_once "../Classes/Controller/Controller.class.php";
-
+    
     //include_once "../src/Autoload.inc.php";
     include_once "../src/requests.inc.php";
     $dbh = new Database;
     $db = $dbh->connect();
     $ctrl = new Controller($db);
-    //$ctrl->data['brand'] = 'Fila';
-    //$ctrl->add_brand();*/
+    $data = $ctrl->selectAll();
+    $brands = $ctrl->select_brands();
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -358,27 +358,21 @@
                     <div class="featured__controls">
                         <ul>
                             <li class="active" data-filter="*">All</li>
-                            <li data-filter=".oranges">Oranges</li>
-                            <li data-filter=".fresh-meat">Fresh Meat</li>
-                            <li data-filter=".vegetables">Vegetables</li>
-                            <li data-filter=".fastfood">Fastfood</li>
+                            <?php for($i = 0;$i < count($brands);$i++):?>
+                                <li data-filter=".<?=$brands[$i]['brand']?>"><?=$brands[$i]['brand']?></li>
+                            <?php endfor;?>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="row featured__filter">
                 <?php
-                    //$d_b = new Database;
-                    //$db = $d_b->connect();
-                    //$obj = new Controller($db);
-                    $data = $ctrl->selectAll();
-                    //print_r($data['0']);
                     $increment = 0;
                     if(!empty($data)):
                         foreach($data as $row):
                             $images = explode(',',$data[$increment]['photo']);
                 ?>
-                            <div class="col-lg-4 col-md-6 col-sm-12 mix oranges fresh-meat">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mix <?=$data[$increment]['brand']?> fresh-meat">
                                 <div class="fetured__item jutify-content-center my-3">
                                     <div class="mx-auto">
                                         <div class="fotorama">

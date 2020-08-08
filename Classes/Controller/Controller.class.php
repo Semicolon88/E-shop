@@ -1,5 +1,5 @@
 <?php
-    //include_once "../Model/config.php";
+
     interface InsertFace
     {
         public function add();
@@ -253,16 +253,37 @@
         }
         public function selectAll()
         {
-            $select_query = "SELECT * FROM products WHERE deleted=0";
+            $select_query = "SELECT 
+                            * 
+                        FROM 
+                            products 
+                        WHERE 
+                            deleted=0";
             $stmt = $this->connection->query($select_query);
-            if($stmt->rowCount() > 0)
-            {
-                while($row = $stmt->fetch())
-                {
-                    $data[] = $row;
-                }
-                return $data;
+            $data = $stmt->fetchAll();
+            for($i= 0;$i < count($data);$i++){
+                $id = $data[$i]['brand'];
+                $sequel = "SELECT 
+                            * 
+                        FROM 
+                            brands 
+                        WHERE 
+                            id =?";
+                $stmt = $this->connection->prepare($sequel);
+                $stmt->execute([$id]);
+                $res = $stmt->fetch();
+                $data[$i]['brand'] = $res['brand'];
             }
+            return $data;
+        }
+        public function select_Brands(){
+            $sequel = "SELECT
+                        * 
+                    FROM 
+                        brands";
+            $stmt = $this->connection->query($sequel);
+            $res = $stmt->fetchAll();
+            return $res;
         }
         public function select_this($id)
         {
@@ -344,12 +365,17 @@
         }
         public function delete_this($id)
         {
-            $sequel = "UPDATE products SET deleted = 1 WHERE id=?";
-            $stmt = $this->DBHandler->prepare($sequel);
+            $sequel = "UPDATE 
+                    products 
+                SET 
+                    deleted = 1 
+                WHERE 
+                    id=?";
+            $stmt = $this->connection->prepare($sequel);
             $exec = $stmt->execute([$id]);
             if($exec)
             {
-                header('Location: pages/data-tables.php');
+                header('Location: data-tables.php');
             }
         }
         public function display_errors()
@@ -478,7 +504,7 @@
             $values = implode(', :',$key);
 
             $sequel = "INSERT INTO cart($keys) VALUES(:".$values.")";
-            $stmt = $this->DBHandler->prepare($sequel);
+            $stmt = $this->connection->prepare($sequel);
             for($i = 0;$i < count($key);$i++){
                 $stmt->bindValue(':'.$key[$i],$value[$i]);
             }
@@ -489,7 +515,7 @@
         }
         public function cart(){
             $sequel = "SELECT * FROM cart WHERE active = 1";
-            $result = $this->DBHandler->query($sequel);
+            $result = $this->connection->query($sequel);
             return $result;
         }
     }

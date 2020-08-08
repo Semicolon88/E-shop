@@ -1,5 +1,6 @@
 <?php
     include_once "config.php";
+
     class Database
     {
         private $host = HOST;
@@ -24,5 +25,4 @@
         }
     }
     Session::start();
-    //Session::destroy();
 ?> 

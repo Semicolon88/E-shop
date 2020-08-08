@@ -339,12 +339,9 @@
             data : {'del-index' : index,'edit_id': <?=$edit_id?>},
             success : (res)=>
             {
-                //if(res == 'removed'){
-                    $('#div'+index).hide();
-                //}
+                $('#div'+index).hide();
             }
         })
-        //$('#div'+index).hide();
     }
 </script>
 </body>

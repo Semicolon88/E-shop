@@ -3,11 +3,11 @@
     include_once "../Classes/Model/Database.class.php";
     include_once "../Classes/Controller/Controller.class.php";
     include_once "../Classes/Controller/Payment.class.php";
-    //include_once "Autoload.inc.php";
+
         if(isset($_POST['pro_id']) && !empty($_POST['pro_id'])){
             if(isset($_FILES['file']['name']) && !empty($_FILES['file']['name']))
             {
-                $dbh = new Database;
+                $dbh = new Model\Database;
                 $db = $dbh->connect();
 
                 $ctrl = new Controller($db);
@@ -23,59 +23,7 @@
             $ctrl = new Controller($db);
             $edit_id = $_POST['edit_id'];
             $ctrl->delete_image($edit_id,$_POST['del-index']);
-            //echo "working";
         }
-        /*if(isset($_POST['del-index'])){
-            $edit_data->delete_image($edit_id,$_POST['del-index']);
-        }
-        if(isset($_POST['edit']))
-        { 
-            if(isset($_FILES['photo']) && !empty($_FILES['photo']['name'])){
-                $edit_data->setFile($_FILES);
-                $edit_data->upload_image();
-                //print_r($_POST);
-                //print_r($_FILES);
-            }
-            $productName = $_POST['product_name'];
-            $price = $_POST['price'];
-            $listPrice = $_POST['list_price'];
-            $cat = $_POST['category'];
-            $port = $_POST['portfolio'];
-            $brand = $_POST['brand'];
-            $details = $_POST['details'];
-            $sizes = $_POST['sizes'];
-            $photo = explode(',',$_POST['img']);
-            $fields = [
-                'product_name'=>$productName,
-                'price'=>$price,
-                'list_price'=>$listPrice,
-                'category'=>$cat,
-                'portfolio'=>$port,
-                'brand'=>$brand,
-                'description'=>$details,
-                'sizes'=>$sizes
-            ];
-            foreach ($fields as $key => $value) 
-            {
-                if(isset($_POST[$key]) && empty($_POST[$key]))
-                {
-                    $edit_data->error[] = "All feilds are required";
-                break;
-                }
-            }
-            if(!empty($edit_data->error))
-            {
-                echo $edit_data->display_errors();
-            }else
-            {
-                $edit_data->setData($fields);
-                if(!empty($edit_data->data))
-                {
-                    $edit_data->update($edit_id);
-                }
-            }
-        }           
-    }*/
     if(isset($_GET['delete']))
     {
         $delete_id = $_GET['delete'];
@@ -97,49 +45,11 @@
         }
         echo $response;
     }
-    if(isset($_POST['signup']))
-    {
-        $firstName = $_POST['first_name'];
-        $lastName = $_POST['last_name'];
-        $email = $_POST['email'];
-        $pword = $_POST['pword'];
-        $rPword = $_POST['r-pword'];
-        $obj = new Controller;
-        if($pword != $rPword)
-        {
-            $obj->error[] = "Password does not match";
-        }
-        $fields = [
-            'first_name'=>$firstName,
-            'last_name'=>$lastName,
-            'email'=>$email,
-            'pword'=>password_hash($pword,PASSWORD_DEFAULT)
-        ];
-        if(!empty($obj->error))
-        {
-            echo $obj->display_errors();
-        }else
-        {
-            $obj->setData($fields);
-            $obj->addUser();
-        }
-    }
-    if(isset($_POST['login']))
-    {
-        $email = $_POST['email'];
-        $pword = $_POST['pword'];
-        $obj = new Controller;
-        $obj->setData(['email'=>$email,'pword'=>$pword]);
-        $obj->login();
-
-    }
+    
     if(isset($_GET['logout'])){
         $obj = new Controller;
         $obj::logOut();
     }
-    /*if(isset($_SESSION['error_flash'])){
-        echo "<div class='bg-info mx-auto col-6>".Session::get('error_flash')."</div>";
-    }*/
     if(isset($_POST['cart'])){
         //echo $_POST['cart_id']
         if($_POST['cart_id'] == 'login_first'){
@@ -149,8 +59,10 @@
                 header('Location: ../../E-shop/View/Admin/concept-master/Login/login.php');
             }
         }else{
-            $data = new Controller;
-            $data->add_cart($_POST['cart_id']);
+            $dbh = new Database;
+            $db = $dbh->connect();
+            $ctrl = new Controller($db);
+            $ctrl->add_cart($_POST['cart_id']);
         }
     }
     if(isset($_POST['Address'])){

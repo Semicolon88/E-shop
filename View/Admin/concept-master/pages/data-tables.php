@@ -3,12 +3,19 @@
     include_once "../../../../Classes/Model/Database.class.php";
     include_once "../../../../Classes/Controller/Controller.class.php";
     //use Classes\Controller\Controller as Controller;
-
+    use App\Model\Database as Database;
+	use App\Controller\Controller as Controller;
     $dbh = new Database;
     $db = $dbh->connect();
     $ctrl = new Controller($db);
-    if(!$ctrl::is_logged_in())
+    if(!$ctrl::is_logged_in()){
         $ctrl::login_error_redirect("../Login/login.php"); 
+    }
+    if(isset($_GET['delete']))
+    {
+        $delete_id = $_GET['delete'];
+        $ctrl->delete_this($delete_id);
+    }
     include_once "../../../../src/test.php";
 ?>
 <div class="row">
@@ -80,7 +87,7 @@
                                             <td>
                                                 <div class="row justify-content-center">
                                                     <div class="col-4 text-center">
-                                                        <a href='../Post.php?delete=<?=$row['id']?>' class="btn btn-ouline-success btn-sm edt-btn"><i class="fas fa-trash-alt"></i></i></a>
+                                                        <a href='<?=$_SERVER['PHP_SELF']?>?delete=<?=$row['id']?>' class="btn btn-ouline-success btn-sm edt-btn"><i class="fas fa-trash-alt"></i></i></a>
                                                     </div>
                                                     <div class="col-4 text-center">
                                                         <a href='../Post.php?edit=<?=$row['id']?>' class="btn btn-ouline-success btn-sm edt-btn"><i class="fas fa-pencil-alt"></i></a>
