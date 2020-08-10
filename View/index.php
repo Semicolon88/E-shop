@@ -96,7 +96,7 @@
                             <li><a href="Admin/concept-master/Login/signup.php">Orders</a></li>
                             <li><a href="Admin/concept-master/Login/login.php">Cart</a></li>
                             <li><a href="Admin/concept-master/Login/signup.php">Saved items</a></li>
-                            <li><a href="../src/log_out.php?logout=true">Log out</a></li>
+                            <li><a href="../src/requests.inc.php?logout=true">Log out</a></li>
                         </ul>
                     </div>
             <?php
@@ -186,7 +186,7 @@
                                             <li><a href="Admin/concept-master/Login/signup.php">Orders</a></li>
                                             <li><a href="Admin/concept-master/Login/login.php">Cart</a></li>
                                             <li><a href="Admin/concept-master/Login/signup.php">Saved items</a></li>
-                                            <li><a href="../src/log_out.php?logout=true">Log out</a></li>
+                                            <li><a href="../src/requests.inc.php?logout=true">Log out</a></li>
                                         </ul>
                                     </div>
                             <?php
@@ -211,8 +211,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo text-center">
-                        <!--a href="./index.html"><img src="ogani/img/logo.png" alt=""></a-->
-                        <h1 class='my-4'>E-shop</h1>
+                        <a href="./index.html"><img src="logo.jpeg" alt="" style='height:10px;'></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -261,17 +260,9 @@
                             <span>All departments</span>
                         </div>
                         <ul>
-                            <li><a href="#">Fresh Meat</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
-                            <li><a href="#">Papayaya & Crisps</a></li>
-                            <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
+                            <?php foreach($brands as $brand):?>
+                                <li><a href=''><?=strtoupper($brand)?></a></li>
+                            <?php endforeach;?>
                         </ul>
                     </div>
                 </div>
@@ -358,9 +349,9 @@
                     <div class="featured__controls">
                         <ul>
                             <li class="active" data-filter="*">All</li>
-                            <?php for($i = 0;$i < count($brands);$i++):?>
-                                <li data-filter=".<?=$brands[$i]['brand']?>"><?=$brands[$i]['brand']?></li>
-                            <?php endfor;?>
+                            <?php foreach($brands as $brand):?>
+                                <li data-filter=".<?=((strpos($brand," ") !== false)?str_replace(" ","-",$brand):$brand)?>"><?=strtoupper($brand)?></li>
+                            <?php endforeach;?>
                         </ul>
                     </div>
                 </div>
@@ -372,7 +363,7 @@
                         foreach($data as $row):
                             $images = explode(',',$data[$increment]['photo']);
                 ?>
-                            <div class="col-lg-4 col-md-6 col-sm-12 mix <?=$data[$increment]['brand']?> fresh-meat">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mix <?= ((strpos($data[$increment]['brand']," ") !== false)?str_replace(" ","-",$data[$increment]['brand']):$data[$increment]['brand'])?>">
                                 <div class="fetured__item jutify-content-center my-3">
                                     <div class="mx-auto">
                                         <div class="fotorama">

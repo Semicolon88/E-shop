@@ -1,13 +1,5 @@
 <?php
-
-    interface InsertFace
-    {
-        public function add();
-        public function upload_image();
-        public function validate(); 
-    }
-
-    class Controller implements InsertFace
+    class Controller
     {
         private $productTable = PRODUCT_TABLE;
         private $categoryTable = CATEGORY_TABLE;
@@ -239,8 +231,11 @@
             $this->data['photo'] = $this->fileNames;
                 $query_keys = implode(',',array_keys($this->data));
                 $query_values = implode(', :',array_keys($this->data));
-                $query = "INSERT INTO products($query_keys) VALUES(:".$query_values.")";
-                $prep_stmt = $this->DBHandler->prepare($query);
+                $query = "INSERT INTO 
+                            products($query_keys) 
+                        VALUES
+                            (:".$query_values.")";
+                $prep_stmt = $this->connection->prepare($query);
                 foreach($this->data as $key => $value)
                 {
                     $prep_stmt->bindValue(":".$key,$value);
@@ -277,13 +272,31 @@
             return $data;
         }
         public function select_Brands(){
+            $res = $this->selectAll();
+            $brands = [];
+            $brand = [];
             $sequel = "SELECT
-                        * 
-                    FROM 
+                        brand
+                    FROM
                         brands";
             $stmt = $this->connection->query($sequel);
-            $res = $stmt->fetchAll();
-            return $res;
+            $result = $stmt->fetchAll();
+            for($i = 0;$i < count($res);$i++){
+                $brands[] = $res[$i]['brand'];
+            }
+            for($i = 0;$i < count($result);$i++){
+                    $brand[] = $result[$i]['brand'];
+            }
+            function intersect($x,$y)
+            {
+                if ($x === $y)
+                {
+                    return 0;
+                }
+                return ($x > $y)?1:-1;
+            }
+            $output =  array_uintersect($brand,$brands,'intersect');
+            return $output;
         }
         public function select_this($id)
         {
@@ -348,7 +361,10 @@
             {
                 $st .= "$key = :".$key.", ";
             }
-            $sql = "UPDATE products SET ".rtrim($st,', ')." 
+            $sql = "UPDATE
+                    products
+                SET 
+                    ".rtrim($st,', ')." 
                 WHERE 
                     id = ".$id;
             $stmt = $this->connection->prepare($sql);
@@ -396,14 +412,14 @@
             $sequel = "SELECT 
                     * 
                 FROM 
-                    users 
+                    user_ids 
                 WHERE 
                     email = ?";
             $stmt = $this->connection->prepare($sequel);
             $stmt->execute([$this->data['email']]);
             if($stmt->rowCount() > 0)
             {
-                $this->error[] = "User with this email already exist!";
+                $this->error[] = "user_id with this email already exist!";
             }
 
             if(!empty($this->error))
@@ -412,7 +428,7 @@
             }else
             {
                 $sequel = "INSERT INTO 
-                        users ($keys) 
+                        user_ids ($keys) 
                     VALUES 
                         (:".$values.")";
                 $stmt = $this->connection->prepare($sequel);
@@ -430,13 +446,18 @@
         }
         public function login()
         {
-            $sequel = "SELECT * FROM users WHERE email = ?";
+            $sequel = "SELECT 
+                        * 
+                    FROM 
+                        users 
+                    WHERE 
+                        email = ?";
             $stmt = $this->connection->prepare($sequel);
             $stmt->execute([$this->data['email']]);
             $result = $stmt->fetch();
             if($stmt->rowCount() == 0)
             {
-                $this->error[] = "User not found";
+                $this->error[] = "user_id not found";
             }
             if(!empty($this->error))
             {
@@ -458,6 +479,17 @@
                     if(Session::get('user_id')['permission'] == 1){
                         header('Location: ../pages/data-tables.php');
                     }else{
+                        $cart_table = "user_".Session::get('user_id')['id'];
+                        $sql = "CREATE TABLE IF NOT EXISTS $cart_table
+                            (
+                                id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                                product_name VARCHAR(255) NOT NULL,
+                                list_price decimal(10,0) NOT NULL,
+                                sizes varchar(255) NOT NULL, 
+                                photo text NOT NULL,
+                                active int(11) NOT NULL DEFAULT 1
+                            )";
+                        $stmt = $this->connection->query($sql);
                         header('Location: ../../../index.php');
                     }
                 }
@@ -482,7 +514,7 @@
         }
         public static function logOut()
         {
-            if(isset($_SESSION))
+            if(isset($_SESSION['user_id']))
             {
                 Session::destroy();
             }
@@ -492,6 +524,7 @@
             $cart_data = $this->select_this($id);
             $key = [];
             $value = [];
+            $cart_table = "user_".Session::get('user_id')['id'];
             $field = ['product_name','list_price','sizes','photo'];
             for($i = 0;$i < count($field);$i++){
                 if(in_array($field[$i],array_keys($cart_data))){
@@ -503,7 +536,10 @@
             $keys = implode(',',$key);
             $values = implode(', :',$key);
 
-            $sequel = "INSERT INTO cart($keys) VALUES(:".$values.")";
+            $sequel = "INSERT INTO 
+                        $cart_table($keys) 
+                    VALUES
+                        (:".$values.")";
             $stmt = $this->connection->prepare($sequel);
             for($i = 0;$i < count($key);$i++){
                 $stmt->bindValue(':'.$key[$i],$value[$i]);
@@ -514,9 +550,18 @@
             }
         }
         public function cart(){
-            $sequel = "SELECT * FROM cart WHERE active = 1";
+            $cart_table = "user_".Session::get('user_id')['id'];
+            $sequel = "SELECT * FROM $cart_table WHERE active = 1";
             $result = $this->connection->query($sequel);
             return $result;
+        }
+        public function checkout(){
+            $cart_table = "user_".Session::get('user_id')['id'];
+            $sequel = "UPDATE $cart_table SET active = 0";
+            $stmt = $this->connection->query($sequel);
+            if($stmt){
+                echo "deleted table";
+            }
         }
     }
 

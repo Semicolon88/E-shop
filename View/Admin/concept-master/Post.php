@@ -10,102 +10,6 @@
         $ctrl::login_error_redirect("Login/login.php");
     }
     //include_once "../../../src/requests.inc.php";
-    if(isset($_POST['submit']))
-    {
-        $productName = $_POST['product_name'];
-        $price = $_POST['price'];
-        $listPrice = $_POST['list_price'];
-        $cat = $_POST['category'];
-        $port = $_POST['portfolio'];
-        $brand = $_POST['brand'];
-        $details = $_POST['details'];
-        $sizes = $_POST['sizes'];
-
-
-        $fields = [
-            'product_name'=>$productName,
-            'price'=>$price,
-            'list_price'=>$listPrice,
-            'category'=>$cat,
-            'portfolio'=>$port,
-            'brand'=>$brand,
-            'description'=>$details,
-            'sizes'=>$sizes
-        ];
-        foreach ($fields as $key => $value) 
-        {
-            if(isset($_POST[$key]) && empty($_POST[$key]))
-            {
-                $ctrl->error[] = "All feilds are required";
-            break;
-            }
-        }
-        if(empty($_FILES['photo']['name'][0])){
-            $ctrl->error[] = "upload image";
-        }else{
-            $ctrl->setFile($_FILES);
-            $ctrl->upload_image();
-        }
-        if(!empty($ctrl->error))
-        {
-            echo $ctrl->display_errors();
-        }else{
-            $ctrl->setData($fields);
-            $ctrl->add();
-        }
-    }
-    if(isset($_GET['edit']))
-    {
-        $edit_id = $_GET['edit'];
-        //$edit_data = new Controller;
-        $data = $ctrl->select_this($edit_id);
-        $img = explode(',',$data['photo']);
-        if(isset($_POST['edit']))
-        { 
-            if(isset($_FILES['photo']) && !empty($_FILES['photo']['name'])){
-                $ctrl->setFile($_FILES);
-                $ctrl->upload_image();
-            }
-            $productName = $_POST['product_name'];
-            $price = $_POST['price'];
-            $listPrice = $_POST['list_price'];
-            $cat = $_POST['category'];
-            $port = $_POST['portfolio'];
-            $brand = $_POST['brand'];
-            $details = $_POST['details'];
-            $sizes = $_POST['sizes'];
-            $photo = explode(',',$_POST['img']);
-            $fields = [
-                'product_name'=>$productName,
-                'price'=>$price,
-                'list_price'=>$listPrice,
-                'category'=>$cat,
-                'portfolio'=>$port,
-                'brand'=>$brand,
-                'description'=>$details,
-                'sizes'=>$sizes
-            ];
-            foreach ($fields as $key => $value) 
-            {
-                if(isset($_POST[$key]) && empty($_POST[$key]))
-                {
-                    $ctrl->error[] = "All feilds are required";
-                break;
-                }
-            }
-            if(!empty($ctrl->error))
-            {
-                echo $ctrl->display_errors();
-            }else
-            {
-                $ctrl->setData($fields);
-                if(!empty($ctrl->data))
-                {
-                    $ctrl->update($edit_id);
-                }
-            }
-        }           
-    }
     include_once "../../../src/header.inc.php";
 ?>
 <div class="row">
@@ -113,19 +17,117 @@
         <div class="card">
             <div class="content">
                 <!--content-->
+                <?php
+                    if(isset($_POST['submit']))
+                    {
+                        $productName = $_POST['product_name'];
+                        $price = $_POST['price'];
+                        $listPrice = $_POST['list_price'];
+                        $cat = $_POST['category'];
+                        $port = $_POST['portfolio'];
+                        $brand = $_POST['brand'];
+                        $details = $_POST['details'];
+                        $sizes = $_POST['sizes'];
+                
+                
+                        $fields = [
+                            'product_name'=>$productName,
+                            'price'=>$price,
+                            'list_price'=>$listPrice,
+                            'category'=>$cat,
+                            'portfolio'=>$port,
+                            'brand'=>$brand,
+                            'description'=>$details,
+                            'sizes'=>$sizes
+                        ];
+                        foreach ($fields as $key => $value) 
+                        {
+                            if(isset($_POST[$key]) && empty($_POST[$key]))
+                            {
+                                $ctrl->error[] = "All feilds are required";
+                            break;
+                            }
+                        }
+                        if(empty($_FILES['photo']['name'][0])){
+                            $ctrl->error[] = "upload image";
+                        }else{
+                            $ctrl->setFile($_FILES);
+                            $ctrl->upload_image();
+                        }
+                        if(!empty($ctrl->error))
+                        {
+                            echo $ctrl->display_errors();
+                        }else{
+                            $ctrl->setData($fields);
+                            $ctrl->add();
+                        }
+                    }
+                    if(isset($_GET['edit']))
+                    {
+                        $edit_id = $_GET['edit'];
+                        //$edit_data = new Controller;
+                        $data = $ctrl->select_this($edit_id);
+                        $img = explode(',',$data['photo']);
+                        if(isset($_POST['edit']))
+                        { 
+                            if(isset($_FILES['photo']) && !empty($_FILES['photo']['name'])){
+                                $ctrl->setFile($_FILES);
+                                $ctrl->upload_image();
+                            }
+                            $productName = $_POST['product_name'];
+                            $price = $_POST['price'];
+                            $listPrice = $_POST['list_price'];
+                            $cat = $_POST['category'];
+                            $port = $_POST['portfolio'];
+                            $brand = $_POST['brand'];
+                            $details = $_POST['details'];
+                            $sizes = $_POST['sizes'];
+                            $photo = explode(',',$_POST['img']);
+                            $fields = [
+                                'product_name'=>$productName,
+                                'price'=>$price,
+                                'list_price'=>$listPrice,
+                                'category'=>$cat,
+                                'portfolio'=>$port,
+                                'brand'=>$brand,
+                                'description'=>$details,
+                                'sizes'=>$sizes
+                            ];
+                            foreach ($fields as $key => $value) 
+                            {
+                                if(isset($_POST[$key]) && empty($_POST[$key]))
+                                {
+                                    $ctrl->error[] = "All feilds are required";
+                                break;
+                                }
+                            }
+                            if(!empty($ctrl->error))
+                            {
+                                echo $ctrl->display_errors();
+                            }else
+                            {
+                                $ctrl->setData($fields);
+                                if(!empty($ctrl->data))
+                                {
+                                    $ctrl->update($edit_id);
+                                }
+                            }
+                        }           
+                    }
+                ?>
                 <form action="Post.php<?=((isset($_GET['edit']))?'?edit='.$edit_id:'')?>" method="POST" id='form' enctype="multipart/form-data">
                     <div class="row my-4 mx-3">
                         <div class="form-group col-12 col-md-4 col-sm-12">
                             <label for="name">Title</label>
-                            <input type="text" name="product_name" id="product_name" class="form-control" value="<?=((isset($_GET['edit']))?$data['product_name']:'')?>">
+                            <input type="text" name="product_name" id="product_name" class="form-control" value="<?=((isset($_GET['edit']))?$data['product_name']:(isset($productName))?$productName:'')?>">
                         </div>
                         <div class="form-group col-12 col-md-4 col-sm-12">
                             <label for="price">Price:</label>
-                            <input type="number" name="price" id="price" class="form-control" min=0 value="<?=((isset($_GET['edit']))?$data['price']:'')?>">
+                            <input type="number" name="price" id="price" class="form-control" min=0 value="<?=((isset($_GET['edit']))?$data['price']:(isset($price))?$price:'')?>">
                         </div>
                         <div class="form-group col-12 col-md-4 col-sm-12">
                             <label for="listPrice">List Price:</label>
-                            <input type="text" name="list_price" id="list_price" class="form-control" value="<?=((isset($_GET['edit']))?$data['list_price']:'')?>">
+                            <input type="text" name="list_price" id="list_price" class="form-control" value="<?=((isset($_GET['edit']))?$data['list_price']:(isset($listPrice))?$listPrice:'')?>">
                         </div>
                     </div>
                     <div class="row mx-3 my-4">
@@ -172,7 +174,7 @@
                                 </div>
                                 <!--div class="form-g col-md-5"-->
                                     <input type="hidden" name='img' value="<?=$data['photo']?>" class='form-control mx-4'>
-                                    <input type="text" id='val' name='sizes' value="<?=$data['sizes']?>" class='form-control mx-4'>
+                                    <input type="text" id='val' name='sizes' value="<?=((isset($_GET['edit']))?$data['sizes']:(isset($sizes))?$sizes:'')?>" class='form-control mx-4'>
                                 <!--/div-->
                             </div>
                         </div>
@@ -181,21 +183,21 @@
                     <div class="row mx-3 my-4">
                         <div class="form-group col-md-4 col-sm-12">
                             <label for="Category">Category:</label>
-                            <input type="text" name="category" id="category" class="form-control" value="<?=((isset($_GET['edit']))?$data['category']:'')?>">
+                            <input type="text" name="category" id="category" class="form-control" value="<?=((isset($_GET['edit']))?$data['category']:(isset($cart))?$cart:'')?>">
                         </div>
                         <div class="form-group col-md-4 col-sm-12">
                             <label for="brand">Brand:</label>
-                            <input type="text" name="brand" id="brand" class="form-control" min=0 value="<?=((isset($_GET['edit']))?$data['brand']:'')?>">
+                            <input type="text" name="brand" id="brand" class="form-control" min=0 value="<?=((isset($_GET['edit']))?$data['brand']:(isset($brand))?$brand:'')?>">
                         </div>
                         <div class="form-group col-md-4 col-sm-12">
                             <label for="portfolio">Portfolio:</label>
-                            <input type="text" name="portfolio" id="portfolio" class="form-control" value="<?=((isset($_GET['edit']))?$data['portfolio']:'')?>">
+                            <input type="text" name="portfolio" id="portfolio" class="form-control" value="<?=((isset($_GET['edit']))?$data['portfolio']:(isset($port))?$port:'')?>">
                         </div>
                     </div>
                     <div class="row mx-3 my-4">
                         <div class="form-group col-md-8 col-sm-8">
                             <label for="description">Description*:</label>
-                            <textarea id="description" name="details" class="form-control tinymce" rows="6"><?=((isset($_GET['edit']))?$data['description']:'')?></textarea>
+                            <textarea id="description" name="details" class="form-control tinymce" rows="6"><?=((isset($_GET['edit']))?$data['description']:(isset($details))?$details:'')?></textarea>
                         </div>
                         <div class="form-group pull-right col-sm-4 col-md-4"><br>
                             <a href="post.php" class="btn btn-outline-dark">Cancel</a>&nbsp;&nbsp;
@@ -305,14 +307,15 @@
     })
 
     
-    let get = (id)=>
+    /*let get = (id)=>
     {
         $('#'+id).change(()=>
         {
             let file = document.querySelector('#'+id).files[0];
             let formdata = new FormData();
+            let editId = <?=$edit_id;?>
             formdata.append('file',file);
-            formdata.append('pro_id',<?=$edit_id?>)
+            formdata.append('pro_id',editId)
             formdata.append('file-index',id.split('-').pop());
             $.ajax({
                 url : '../../../src/requests.inc.php',
@@ -328,9 +331,9 @@
                 }
             })
         });
-    }
+    }*/
 
-    let del = (id)=>
+   /* let del = (id)=>
     {
         let index = id.split('-').pop();
         $.ajax({
@@ -342,7 +345,7 @@
                 $('#div'+index).hide();
             }
         })
-    }
+    }*/
 </script>
 </body>
 

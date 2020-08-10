@@ -47,8 +47,10 @@
     }
     
     if(isset($_GET['logout'])){
-        $obj = new Controller;
-        $obj::logOut();
+        $dbh = new Database;
+        $db = $dbh->connect();
+        $ctrl = new Controller($db);
+        $ctrl::logOut();
     }
     if(isset($_POST['cart'])){
         //echo $_POST['cart_id']
@@ -80,5 +82,11 @@
         }else{
             echo $obj->display_errors();
         }
+    }
+    if(isset($_POST['pay'])){
+        $dbh = new Database;
+        $db = $dbh->connect();
+        $ctrl = new Controller($db);
+        $ctrl->checkout();
     }
 ?>

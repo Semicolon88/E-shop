@@ -3,12 +3,8 @@
    include_once "../../Classes/Model/Database.class.php";
    include_once "../../Classes/Controller/Controller.class.php";
    include_once "../../Classes/Controller/Payment.class.php";
-   //include_once "../../src/requests.inc.php";
-
-   //$user = new Controller;
-   /*if(!$user::is_logged_in()){
-       $user::login_error_redirect("../index.php");
-   }*/
+   $dbh = new Database;
+   $db = $dbh->connect();
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -257,6 +253,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+                <?php if(isset($_SESSION['user_id'])):?>
+                    <?php 
+                        $ctrl = new Controller($db);
+                        $cart_data = $ctrl->cart();
+                    ?>
+                    <?php if(!empty($cart_data)):?>
                     <div class="shoping__cart__table">
                         <table>
                             <thead>
@@ -270,13 +272,10 @@
                             </thead>
                             <tbody>
                                 <?php
-                                   $dbh = new Database;
-                                   $db = $dbh->connect();
-                                   $ctrl = new Controller($db);
-                                   $cart_data = $ctrl->cart();
                                    $indexer = 0;
                                    $total = 0;
-                                   if(!empty($cart_data)):
+                                   //if(isset($_SESSION['user_id'])):
+                                    //if(!empty($cart_data)):
                                     foreach($cart_data as $data):
                                         $total = $total + $data['list_price'];
                                         $image = explode(',',$data['photo']);
@@ -312,13 +311,22 @@
                                         </td>
                                     </tr>
                                 <?php
-                                $indexer++;
-                                endforeach;
-                                    endif;
+                                            $indexer++;
+                                        endforeach;
                                 ?>
                             </tbody>
                         </table>
                     </div>
+                    <?php
+                            endif;
+                        else:
+                    ?>
+                        <div class="container bg-info text-center">
+                            <h3>NO ITEM</h3>
+                        </div>
+                    <?php
+                        endif;
+                    ?>
                 </div>
             </div>
             <div class="row">
@@ -344,8 +352,8 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span id='total'><?="$".$total?></span></li>
-                            <li>Total <span>$454.98</span></li>
+                            <li>Subtotal <span id='sub-total'><?=((isset($_SESSION['user_id'])&&!empty($cart_data))?"$".$total:0)?></span></li>
+                            <li>Total <span id='total'><?=((isset($_SESSION['user_id'])&&!empty($cart_data))?"$".$total:0)?></span></li>
                         </ul>
                         <a href="#" data-toggle="modal" data-target="#exampleModal" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
@@ -501,7 +509,7 @@
                     <div id="card-errors" role="alert"></div>
                 </div>
 
-                <button>Submit Payment</button>
+                <button id='pay'>Submit Payment</button>
             </form>
         </div>
       </div>
@@ -569,6 +577,7 @@
                 res = res + Number(data);
             })
             $('#total').text("$ "+res);
+            $('#sub-total').text("$ "+res);
         });
         let validatePayType = ()=>{
             let data = {
@@ -586,6 +595,16 @@
                 }
             })
         }
+        $('#pay').click(()=>{
+            $.ajax({
+                url : '../../src/requests.inc.php',
+                method : 'POST',
+                data : {pay : true},
+                success : (res)=>{
+                    console.log('res');
+                }
+            })
+        })
     </script>
 </body>
 
