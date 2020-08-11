@@ -261,7 +261,7 @@
                         </div>
                         <ul>
                             <?php foreach($brands as $brand):?>
-                                <li><a href=''><?=strtoupper($brand)?></a></li>
+                                <li><a href=''><?=strheroku --versiontoupper($brand)?></a></li>
                             <?php endforeach;?>
                         </ul>
                     </div>
